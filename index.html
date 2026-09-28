@@ -1,802 +1,1120 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>BGOS</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Consolas&display=swap');
-  body, html {
-    margin: 0; padding: 0; height: 100%;
-    font-family: Consolas, monospace, 'Courier New', monospace;
-    color: #d4d4d4;
-    background-color: #1e1e1e;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  body.light {
-    background-color: #f5f5f5;
-    color: #222;
-  }
-  #loader-box {
-    position: fixed;
-    z-index: 9999;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    border: 5px solid black;
-    width: 90vw;
-    max-width: 420px;
-    background: #fff;
-    padding: 3vw 4vw 4vw 4vw;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    user-select: none;
-    border-radius: 6px;
-  }
-  #title {
-    font-size: 10vw;
-    max-font-size: 72px;
-    font-weight: 900;
-    color: black;
-    display: flex;
-    justify-content: flex-start;
-    align-items: baseline;
-    line-height: 1;
-  }
-  #title span.version {
-    font-size: 3.2vw;
-    max-font-size: 20px;
-    font-weight: 400;
-    margin-left: auto;
-  }
-  #progress-bar {
-    width: 100%;
-    height: 1.7vw;
-    max-height: 8px;
-    background: #222;
-    border-radius: 4px;
-    overflow: hidden;
-    margin-top: 4vw;
-  }
-  #progress-fill {
-    background: #35b843;
-    height: 100%;
-    width: 0%;
-    transition: width 0.1s linear;
-  }
-  #random-text {
-    font-size: 4vw;
-    max-font-size: 18px;
-    margin-top: 1.5vw;
-    color: black;
-    text-align: center;
-  }
-  #loading-text {
-    font-size: 12vw;
-    max-font-size: 72px;
-    margin-top: 3vw;
-    font-weight: 700;
-    color: black;
-    text-align: center;
-  }
-  @media screen and (min-width: 500px) {
-    #loader-box {
-      padding: 20px 30px 30px 30px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Кто дежурный? — Расписание дежурств</title>
+  
+  <style>
+    :root {
+      --bg-primary: #f1f5f9;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --header-bg: #854d0e;
+      --board-bg: #113826;
+      --board-border: #78350f;
+      --today-green: #10b981;
+      --today-bg: #d1fae5;
+      --tomorrow-yellow: #f59e0b;
+      --tomorrow-bg: #fef3c7;
+      --sketch-red: #dc2626;
     }
-    #title {
-      font-size: 72px;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
-    #title span.version {
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+      padding-bottom: 24px;
+    }
+
+    header {
+      width: 100%;
+      background-color: var(--header-bg);
+      color: #fef3c7;
+      padding: 12px 16px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      background: #fef3c7;
+      color: var(--header-bg);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
       font-size: 20px;
     }
-    #progress-bar {
-      height: 8px;
-      margin-top: 20px;
+
+    .brand-title h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      line-height: 1.1;
     }
-    #random-text {
-      font-size: 18px;
+
+    .brand-title p {
+      font-size: 0.72rem;
+      color: #fde68a;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      background: rgba(255,255,255,0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-yellow {
+      background: #f59e0b;
+      color: #0f172a;
+      border: none;
+    }
+
+    .btn-yellow:hover {
+      background: #d97706;
+      color: #ffffff;
+    }
+
+    main {
+      width: 100%;
+      max-width: 900px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Chalkboard Section */
+    .chalkboard {
+      background: var(--board-bg);
+      border: 8px solid var(--board-border);
+      border-radius: 16px;
+      padding: 14px;
+      color: #ffffff;
+      text-align: center;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 8px 16px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    .chalkboard-subtitle {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #34d399;
+      font-weight: 800;
+    }
+
+    .chalkboard-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #fef08a;
+      margin: 4px 0 10px;
+      letter-spacing: 1px;
+    }
+
+    .date-control {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      flex-wrap: wrap;
+    }
+
+    .date-input {
+      background: #064e3b;
+      color: #ecfdf5;
+      border: 1px solid #10b981;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .holiday-tag {
       margin-top: 8px;
+      display: inline-block;
+      background: #dc2626;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 4px 14px;
+      border-radius: 10px;
+      border: 2px solid #fca5a5;
+      animation: pulse 2s infinite;
     }
-    #loading-text {
-      font-size: 72px;
-      margin-top: 14px;
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(0.98); }
     }
-  }
-  #container {
-    display: none;
-    flex-direction: column;
-    flex-grow: 1;
-    position: relative;
-    max-width: 800px;
-    margin: 20px auto;
-    box-shadow: 0 0 12px rgba(0,0,0,0.8);
-    border-radius: 6px;
-    background: #252526;
-    height: 90vh;
-    overflow: hidden;
-    user-select: none;
-    transition: background-color 0.3s;
-  }
-  body.light #container {
-    background: #fff;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  }
-  #header {
-    height: 38px;
-    background: linear-gradient(90deg, #0078d7, #005a9e);
-    color: white;
-    font-weight: 600;
-    user-select: text;
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    font-size: 16px;
-    position: relative;
-  }
-  #btn-load-json, #btn-export, #btn-theme {
-    position: absolute;
-    top: 6px;
-    width: 28px;
-    height: 28px;
-    background-color: #0078d7;
-    border: none;
-    border-radius: 5px;
-    font-size: 20px;
-    line-height: 24px;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 0.2s ease;
-  }
-  #btn-load-json:hover, #btn-export:hover, #btn-theme:hover {
-    background-color: #005a9e;
-  }
-  #btn-load-json { right: 12px; }
-  #btn-export { right: 50px; }
-  #btn-theme { right: 88px; }
-  #terminal {
-    flex-grow: 1;
-    padding: 15px 20px;
-    background: #1e1e1e;
-    overflow-y: auto;
-    white-space: pre-wrap;
-    font-size: 14px;
-    border-bottom: 1px solid #333;
-    user-select: text;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  body.light #terminal {
-    background: #fafafa;
-    color: #111;
-    border-color: #ddd;
-  }
-  #input-section {
-    display: flex;
-    padding: 10px 20px;
-    background: #252526;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    transition: background-color 0.3s;
-  }
-  body.light #input-section {
-    background: #fff;
-  }
-  #command-input {
-    flex-grow: 1;
-    background: #1e1e1e;
-    border: 1px solid #555;
-    border-radius: 4px;
-    padding: 9px 12px;
-    font-size: 16px;
-    font-family: Consolas, monospace;
-    color: #eee;
-    outline: none;
-    transition: border-color 0.2s ease, background-color 0.3s, color 0.3s;
-  }
-  body.light #command-input {
-    background: #fff;
-    color: #222;
-    border-color: #ccc;
-  }
-  #command-input:focus {
-    border-color: #0078d7;
-    background: #252526;
-  }
-  body.light #command-input:focus {
-    background: #eaeaea;
-  }
-  #btn-send {
-    margin-left: 10px;
-    background-color: #0078d7;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-family: Consolas, monospace;
-    font-weight: 600;
-    font-size: 16px;
-    padding: 10px 18px;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    transition: background-color 0.2s ease;
-  }
-  #btn-send:hover {
-    background-color: #005a9e;
-  }
-  #error-screen {
-  display: none;
-  position: fixed;
-  top: 0; 
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #0033cc;
-  color: #fff;
-  z-index: 9999;
-  padding: 20px;
-  font-family: monospace;
-  box-sizing: border-box;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
 
-#error-screen h1 {
-  margin-top: 0;
-  font-size: 2em;
-  font-weight: bold;
-}
+    .blackboard-indicator {
+      background: #fef3c7;
+      border: 1px solid #fde047;
+      color: #78350f;
+      text-align: center;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      margin: 2px auto;
+      max-width: 360px;
+    }
 
-#error-info {
-  white-space: pre-wrap;
-  word-break: break-word;
-  margin-top: 1em;
-  font-size: 1em;
-  max-width: 100%;
-}
+    .classroom-wrapper {
+      position: relative;
+      width: 100%;
+    }
 
-</style>
+    .classroom-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .row-column {
+      background: rgba(226, 232, 240, 0.7);
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 8px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .row-header {
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #475569;
+      padding-bottom: 4px;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+
+    /* Strict uniform sizing for all 15 desks */
+    .desk-card {
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 6px 4px;
+      height: 96px; /* Exactly fixed height for pixel perfection */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .desk-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .desk-title {
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+
+    .desk-names-container {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 0;
+      overflow: hidden;
+    }
+
+    .desk-names-text {
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.15;
+      word-break: break-word;
+      white-space: normal;
+      width: 100%;
+      text-align: center;
+    }
+
+    .desk-badge-slot {
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .desk-badge {
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    /* Highlighted Desk States */
+    .desk-today {
+      background: var(--today-bg) !important;
+      border-color: var(--today-green) !important;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+      z-index: 12;
+    }
+
+    .desk-today .desk-title {
+      color: #047857;
+    }
+
+    .desk-today .desk-badge {
+      background: var(--today-green);
+      color: #ffffff;
+    }
+
+    .desk-tomorrow {
+      background: var(--tomorrow-bg) !important;
+      border-color: var(--tomorrow-yellow) !important;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+      z-index: 11;
+    }
+
+    .desk-tomorrow .desk-title {
+      color: #b45309;
+    }
+
+    .desk-tomorrow .desk-badge {
+      background: var(--tomorrow-yellow);
+      color: #ffffff;
+    }
+
+    /* SVG overlay for route */
+    #routeSvg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 20;
+      overflow: visible;
+    }
+
+    .result-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    /* Big Red Sketch Box Button */
+    .sketch-btn {
+      background: #ef4444;
+      color: #ffffff;
+      border: 3px solid #b91c1c;
+      border-radius: 14px;
+      padding: 10px 28px;
+      font-size: 1.25rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #991b1b;
+      letter-spacing: 1px;
+      transition: all 0.1s ease;
+    }
+
+    .sketch-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #991b1b;
+    }
+
+    /* Hand-Drawn / Sketch Style Result Box */
+    .sketch-result-card {
+      background: #fffbeb;
+      border: 4px dashed #92400e;
+      border-radius: 18px;
+      padding: 16px;
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+
+    .sketch-result-title {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #b45309;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .sketch-main-text {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #dc2626;
+      line-height: 1.1;
+      margin: 4px 0;
+      letter-spacing: 0.5px;
+    }
+
+    .sketch-sub-text {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 4px;
+    }
+
+    .sketch-next-text {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #fde68a;
+      font-size: 0.78rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .holiday-info-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      border: 1px solid #e2e8f0;
+      font-size: 0.72rem;
+      color: #475569;
+    }
+
+    .holiday-info-title {
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .holiday-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    @media (min-width: 640px) {
+      .holiday-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    /* Modal dialog */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(3px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+      background: var(--header-bg);
+      color: #ffffff;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .modal-body {
+      padding: 12px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .modal-row-title {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #854d0e;
+      text-transform: uppercase;
+      padding-top: 4px;
+      border-bottom: 1px solid #fef3c7;
+    }
+
+    .modal-desk-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+
+    .modal-desk-item label {
+      width: 65px;
+      font-weight: 700;
+      color: #475569;
+      shrink: 0;
+    }
+
+    .modal-desk-item input {
+      flex: 1;
+      padding: 6px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    .modal-desk-item input:focus {
+      border-color: #f59e0b;
+    }
+
+    .modal-footer {
+      padding: 10px 16px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+  </style>
 </head>
 <body>
-<div id="error-screen" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0033cc;color:#fff;z-index:9999;padding:20px;font-family:monospace;">
-  <h1>BGOS ERROR</h1>
-  <p>Attention, a small error has occurred, please contact the developers for help</p>
-  <pre id="error-info"></pre>
-</div>
 
-<div id="loader-box" role="region" aria-label="Загрузка BGOS">
-  <div id="title">BGOS<span class="version">v. 2.7</span></div>
-  <div id="progress-bar" aria-label="Прогресс загрузки">
-    <div id="progress-fill"></div>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">🏫</div>
+        <div class="brand-title">
+          <h1>Кто дежурный?</h1>
+          <p>Автоматическое расписание класса</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn" id="routeToggleBtn" onclick="toggleRoute()">
+          <span>📌 Маршрут: Вкл</span>
+        </button>
+        <button class="btn" onclick="openModal()">
+          <span>⚙️ Ученики</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Chalkboard Title Banner -->
+    <section class="chalkboard">
+      <div class="chalkboard-subtitle">Классный уголок</div>
+      <div class="chalkboard-title">КТО ДЕЖУРНЫЙ?</div>
+
+      <div class="date-control">
+        <button class="btn" onclick="addDays(-1)">◄</button>
+        <input type="date" id="datePicker" class="date-input" onchange="onDateChange()">
+        <button class="btn" onclick="addDays(1)">►</button>
+        <button class="btn btn-yellow" onclick="resetToToday()">Сегодня</button>
+      </div>
+
+      <div id="holidayBanner" class="holiday-tag" style="display: none;">
+        🌴 КАНИКУЛЫ! 🌴
+      </div>
+    </section>
+
+    <!-- Front Classroom Indicator -->
+    <div class="blackboard-indicator">
+      📋 ДОСКА И СТОЛ УЧИТЕЛЯ (ПЕРЕДНЯЯ ЧАСТЬ КЛАССА)
+    </div>
+
+    <div class="classroom-wrapper" id="gridWrapper">
+      <!-- SVG Snake Line -->
+      <svg id="routeSvg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#b91c1c"/>
+          </marker>
+        </defs>
+        <path id="routePath" d="" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrow)" opacity="0.85" />
+      </svg>
+
+      <!-- 3 Columns (1, 2, 3 РЯД) -->
+      <div class="classroom-grid" id="classroomGrid">
+        
+        <!-- ROW 1 -->
+        <div class="row-column">
+          <div class="row-header">1 РЯД (у окна)</div>
+          <div class="desk-card" id="desk-1-1" onclick="selectDesk(1,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-1"></span></div></div>
+          <div class="desk-card" id="desk-1-2" onclick="selectDesk(1,2)"><div class="desk-title">ПАРТА 2</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-2"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-2"></span></div></div>
+          <div class="desk-card" id="desk-1-3" onclick="selectDesk(1,3)"><div class="desk-title">ПАРТА 3</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-3"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-3"></span></div></div>
+          <div class="desk-card" id="desk-1-4" onclick="selectDesk(1,4)"><div class="desk-title">ПАРТА 4</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-4"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-4"></span></div></div>
+          <div class="desk-card" id="desk-1-5" onclick="selectDesk(1,5)"><div class="desk-title">ПАРТА 5</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-5"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-5"></span></div></div>
+        </div>
+
+        <!-- ROW 2 -->
+        <div class="row-column">
+          <div class="row-header">2 РЯД (середина)</div>
+          <div class="desk-card" id="desk-2-1" onclick="selectDesk(2,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-1"></span></div></div>
+          <div class="desk-card" id="desk-2-2" onclick="selectDesk(2,2)"><div class="desk-title">ПАРТА 2</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-2"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-2"></span></div></div>
+          <div class="desk-card" id="desk-2-3" onclick="selectDesk(2,3)"><div class="desk-title">ПАРТА 3</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-3"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-3"></span></div></div>
+          <div class="desk-card" id="desk-2-4" onclick="selectDesk(2,4)"><div class="desk-title">ПАРТА 4</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-4"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-4"></span></div></div>
+          <div class="desk-card" id="desk-2-5" onclick="selectDesk(2,5)"><div class="desk-title">ПАРТА 5</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-5"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-5"></span></div></div>
+        </div>
+
+        <!-- ROW 3 -->
+        <div class="row-column">
+          <div class="row-header">3 РЯД (у двери)</div>
+          <div class="desk-card" id="desk-3-1" onclick="selectDesk(3,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-1"></span></div></div>
+          <div class="desk-card" id="desk-3-2" onclick="selectDesk(3,2)"><div class="desk-title">ПАРТА 2</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-2"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-2"></span></div></div>
+          <div class="desk-card" id="desk-3-3" onclick="selectDesk(3,3)"><div class="desk-title">ПАРТА 3</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-3"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-3"></span></div></div>
+          <div class="desk-card" id="desk-3-4" onclick="selectDesk(3,4)"><div class="desk-title">ПАРТА 4</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-4"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-4"></span></div></div>
+          <div class="desk-card" id="desk-3-5" onclick="selectDesk(3,5)"><div class="desk-title">ПАРТА 5</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-5"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-5"></span></div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <section class="result-section">
+      <button class="sketch-btn" onclick="resetToToday()">УЗНАТЬ</button>
+
+      <div class="sketch-result-card">
+        <div class="sketch-result-title">Дежурные на выбранную дату</div>
+        <div class="sketch-main-text" id="resultMainText">3 ПАРТА, 1 РЯД</div>
+        <div class="sketch-sub-text" id="resultSubText">За этой партой: -</div>
+        <div class="sketch-next-text" id="resultNextText">Следующее дежурство: -</div>
+      </div>
+    </section>
+
+    <!-- Holiday Reference Card -->
+    <section class="holiday-info-card">
+      <div class="holiday-info-title">
+        <span>🗓️ График каникул (дежурства приостанавливаются)</span>
+      </div>
+      <div class="holiday-grid">
+        <div>🍂 <b>Осенние:</b> 01.11 – 08.11</div>
+        <div>❄️ <b>Зимние:</b> 25.12 – 10.01</div>
+        <div>🌱 <b>Весенние:</b> 21.03 – 28.03</div>
+        <div>☀️ <b>Летние:</b> 12.06 – 31.08</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal Dialog for editing students -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span>Редактирование учеников</span>
+        <button class="btn" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="modalInputs">
+        <!-- Injected dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn" style="color: #dc2626;" onclick="resetDefaultStudents()">Сбросить</button>
+        <button class="btn btn-yellow" onclick="saveModalStudents()">Сохранить</button>
+      </div>
+    </div>
   </div>
-  <div id="random-text" aria-live="polite" aria-atomic="true">{текст}</div>
-  <div id="loading-text" aria-label="Загрузка">загрузка...</div>
-</div>
 
-<div id="container" role="main" aria-label="Терминал BGOS 2.7" tabindex="0">
-  <div id="header">
-    BGOS Терминал 
-    <button id="btn-theme" title="Сменить тему" aria-label="Сменить тему">🌓</button>
-    <button id="btn-export" title="Экспорт команд и истории" aria-label="Экспорт команд и истории">⇩</button>
-    <button id="btn-load-json" title="Загрузить JSON команду" aria-label="Загрузить JSON команду">+</button>
-  </div>
-  <div id="terminal" aria-live="polite" aria-atomic="false"></div>
-  <div id="input-section">
-    <input id="command-input" type="text" autocomplete="off" aria-label="Строка ввода команды" placeholder="Введите команду...">
-    <button id="btn-send" aria-label="Отправить команду">Ввод</button>
-  </div>
-  <input type="file" id="file-input" accept="application/json" style="display:none" aria-hidden="true" />
-</div>
+  <script>
+    const DEFAULT_STUDENTS = {
+      "1-1": "Иванов И., Петров П.",
+      "1-2": "Сидоров С., Смирнова А.",
+      "1-3": "Кузнецов М., Попова Е.",
+      "1-4": "Васильев Д., Соколова О.",
+      "1-5": "Новиков А., Морозова В.",
+      "2-1": "Фёдоров Г., Волкова Т.",
+      "2-2": "Алексеев В., Лебедева М.",
+      "2-3": "Семёнов И., Козлова Н.",
+      "2-4": "Павлов К., Степанова Ю.",
+      "2-5": "Николаев Д., Макарова Е.",
+      "3-1": "Орлов А., Андреева С.",
+      "3-2": "Захаров М., Зайцева Д.",
+      "3-3": "Соловьёв П., Борисова К.",
+      "3-4": "Яковлев А., Григорьева И.",
+      "3-5": "Романов Е., Воробьёва Н."
+    };
 
-<script>
-window.onerror = function(message, url, line, col, error) {
-  const screen = document.getElementById('error-screen');
-  const info = document.getElementById('error-info');
-  if (!screen || !info) {
-    console.error('Ошибка:', message, url, line, col, error);
-    return true;
-  }
-  let details = `Сообщение: ${message}\n`;
-  if (url) details += `URL: ${url}\n`;
-  if (line !== undefined) details += `Строка: ${line}\n`;
-  if (col !== undefined) details += `Столбец: ${col}\n`;
-  if (error && error.stack) details += `Стек вызовов:\n${error.stack}`;
-  else if (error) details += `Error: ${error.toString()}`;
-  info.textContent = details;
-  screen.style.display = 'block';
-  screen.focus();
-  document.getElementById('loader-box').style.display = 'none';
-  document.getElementById('container').style.display = 'none';
-  return true;
-};
+    let students = {};
+    let currentDate = new Date();
+    let showRoute = true;
 
-window.onunhandledrejection = function(event) {
-  const screen = document.getElementById('error-screen');
-  const info = document.getElementById('error-info');
-  if (!screen || !info) {
-    console.error('Unhandled Promise Rejection:', event.reason);
-    return;
-  }
-  let details = 'Необработанное отклонение Promise:\n';
-  if (event.reason && event.reason.message) details += event.reason.message + '\n';
-  if (event.reason && event.reason.stack) details += event.reason.stack;
-  else details += (event.reason ? event.reason.toString() : 'No details');
-  info.textContent = details;
-  screen.style.display = 'block';
-  screen.focus();
-  document.getElementById('loader-box').style.display = 'none';
-  document.getElementById('container').style.display = 'none';
-};
+    // Safe LocalStorage
+    function safeGetStorage(key, defaultVal) {
+      try {
+        const val = localStorage.getItem(key);
+        return val ? JSON.parse(val) : defaultVal;
+      } catch (e) {
+        return defaultVal;
+      }
+    }
 
-const defaultTexts = [
-  "Марар", "Больше веселья!", "Майнкрафт", "Терминал",
-  "/test", "/help", "/clear", "Ты читаешь это?",
-  "БОЛЬШЕ ТЕКСТ!", "error", "unknown error"
-];
+    function safeSetStorage(key, val) {
+      try {
+        localStorage.setItem(key, JSON.stringify(val));
+      } catch (e) {
+        // Ignore Storage Exceptions in Chrome file://
+      }
+    }
 
-let cmtext = [...defaultTexts];
-let useDefaultTexts = true;
+    function checkIsHoliday(dateObj) {
+      const m = dateObj.getMonth() + 1; // 1-12
+      const d = dateObj.getDate();      // 1-31
 
-const randomTextEl = document.getElementById('random-text');
+      // Autumn: 01.11 - 08.11
+      if (m === 11 && d >= 1 && d <= 8) {
+        return { isHoliday: true, name: 'Осенние каникулы (01.11 – 08.11)' };
+      }
+      // Winter: 25.12 - 10.01
+      if ((m === 12 && d >= 25) || (m === 1 && d <= 10)) {
+        return { isHoliday: true, name: 'Зимние каникулы (25.12 – 10.01)' };
+      }
+      // Spring: 21.03 - 28.03
+      if (m === 3 && d >= 21 && d <= 28) {
+        return { isHoliday: true, name: 'Весенние каникулы (21.03 – 28.03)' };
+      }
+      // Summer: 12.06 - 31.08
+      if ((m === 6 && d >= 12) || m === 7 || m === 8) {
+        return { isHoliday: true, name: 'Летние каникулы (12.06 – 31.08)' };
+      }
 
-function updateLoadingText() {
-  if (cmtext.length === 0) {
-    randomTextEl.textContent = '';
-    return;
-  }
-  const idx = Math.floor(Math.random() * cmtext.length);
-  randomTextEl.textContent = cmtext[idx];
-}
+      return { isHoliday: false, name: '' };
+    }
 
-let loadingTextInterval = setInterval(updateLoadingText, 1500);
-
-const progressFill = document.getElementById('progress-fill');
-const loaderBox = document.getElementById('loader-box');
-const container = document.getElementById('container');
-const totalDuration = 5000;
-const targetPercent = 85;
-let startTime = null;
-let loadingComplete = false;
-
-function setLoadingVisible(isVisible) {
-  if (isVisible) {
-    loaderBox.style.display = 'flex';
-    container.style.display = 'none';
-    document.getElementById('error-screen').style.display = 'none';
-  } else {
-    loaderBox.style.display = 'none';
-    container.style.display = 'flex';
-  }
-}
-
-function animateProgress(timestamp) {
-  if (!startTime) startTime = timestamp;
-  let elapsed = timestamp - startTime;
-  let progress = Math.min(elapsed / totalDuration, 1);
-  progressFill.style.width = (progress * targetPercent) + '%';
-  if (elapsed < totalDuration) {
-    requestAnimationFrame(animateProgress);
-  } else {
-    setLoadingVisible(false);
-    loadingComplete = true;
-    document.getElementById('command-input').focus();
-  }
-}
-
-const terminal = document.getElementById('terminal');
-const input = document.getElementById('command-input');
-const btnSend = document.getElementById('btn-send');
-const btnLoadJson = document.getElementById('btn-load-json');
-const btnExport = document.getElementById('btn-export');
-const btnTheme = document.getElementById('btn-theme');
-const fileInput = document.getElementById('file-input');
-const body = document.body;
-
-const baseCommands = {
-  '/help': {
-    description: 'Показать список всех команд или подробную информацию о команде',
-    example: '/help /test',
-    syntax: '/help [команда]',
-    execute: (args) => {
-      if (args.length === 0) {
-        let keys = Object.keys(commands).sort();
-        return 'Команды:<br>' + keys.join(', ');
+    function getAcademicYearStart(dateObj) {
+      const year = dateObj.getFullYear();
+      const month = dateObj.getMonth() + 1;
+      // If month >= September (9), start Sept 1 of current year, else Sept 1 of previous year
+      if (month >= 9) {
+        return new Date(year, 8, 1);
       } else {
-        let cmd = args[0].toLowerCase();
-        if (!(cmd in commands)) {
-          return `Команда "${cmd}" не найдена.`;
+        return new Date(year - 1, 8, 1);
+      }
+    }
+
+    function calculateDuty(targetDate) {
+      const holiday = checkIsHoliday(targetDate);
+      if (holiday.isHoliday) {
+        return { isHoliday: true, name: holiday.name };
+      }
+
+      const startDate = getAcademicYearStart(targetDate);
+      let cur = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+      let schoolDaysCount = 0;
+
+      while (cur <= targetDate) {
+        const h = checkIsHoliday(cur);
+        if (!h.isHoliday) {
+          schoolDaysCount++;
         }
-        let c = commands[cmd];
-        return `<b>Команда:</b> ${cmd}<br>` +
-               `<b>Описание:</b> ${c.description || 'нет описания'}<br>` +
-               `<b>Пример:</b> ${c.example || 'нет примера'}<br>` +
-               `<b>Синтаксис:</b> ${c.syntax || 'нет синтаксиса'}`;
+        cur.setDate(cur.getDate() + 1);
       }
-    }
-  },
-  '/test': {
-    description: 'Тест команды BGOS',
-    example: '/test',
-    syntax: '/test',
-    execute: () => {
-      let list = Object.keys(commands).sort().join('", "');
-      return `___Test BGOS___<br>1.Command list: "${list}"<br>___Test end___<br>_______________`;
-    }
-  },
-  '/clear': {
-    description: 'Очистить терминал',
-    example: '/clear',
-    syntax: '/clear',
-    execute: () => {
-      terminal.innerHTML = '';
-      return '';
-    }
-  },
-  '/deletetext': {
-    description: 'Удалить слово из текста загрузки, off — отключить встроенные, пусто — показать список',
-    example: '/deletetext error',
-    syntax: '/deletetext [слово|off|]',
-    execute: (args) => {
-      if (args.length === 0) {
-        if (cmtext.length === 0) {
-          if (useDefaultTexts) {
-            return 'Тексты загрузки: (встроенные тексты отключены, список пуст)';
-          }
-          return 'Тексты загрузки: список пуст.';
-        }
-        return 'Тексты загрузки:\n' + cmtext.join(', ');
-      }
-      let arg = args[0].toLowerCase();
-      if (arg === 'off') {
-        useDefaultTexts = false;
-        cmtext = [];
-        saveState();
-        updateLoadingText();
-        clearInterval(loadingTextInterval);
-        loadingTextInterval = setInterval(updateLoadingText, 1500);
-        return 'Встроенные слова отключены.';
-      }
-      if (useDefaultTexts && cmtext.length === 0) cmtext = [...defaultTexts];
-      let beforeLength = cmtext.length;
-      cmtext = cmtext.filter(t => t.toLowerCase() !== arg);
-      saveState();
-      if (cmtext.length < beforeLength) {
-        updateLoadingText();
-        return `Слово "${arg}" удалено из загрузочных текстов.`;
-      } else {
-        return `Слово "${arg}" не найдено в загрузочных текстах.`;
-      }
-    }
-  }
-};
 
-let commands = {...baseCommands};
-window.commands = commands;
+      if (schoolDaysCount === 0) {
+        return { isHoliday: true, name: 'Каникулы' };
+      }
 
-// Объединённая функция вывода в терминал [единственная]
-function printToTerminal(text) {
-  if (!text) return;
-  const html = text.replace(/\n/g, '<br>');
-  terminal.innerHTML += html + '<br>';
-  terminal.scrollTop = terminal.scrollHeight;
-}
+      // Index 0 to 14
+      const index = (schoolDaysCount - 1) % 15;
+      const row = Math.floor(index / 5) + 1;
+      const desk = (index % 5) + 1;
 
-// Сохранение пользовательских команд
-function saveCommands() {
-  let custom = {};
-  for (let k in commands) {
-    if (!(k in baseCommands)) {
-      const c = commands[k];
-      custom[k] = {
-        description: c.description,
-        example: c.example,
-        syntax: c.syntax,
-        error: c.error || '',
-        code: c._codeString || ''
+      return {
+        isHoliday: false,
+        row: row,
+        desk: desk,
+        key: `${row}-${desk}`,
+        index: index
       };
     }
-  }
-  localStorage.setItem('bgos_commands', JSON.stringify(custom));
-}
 
-// Загрузка пользовательских команд
-function loadCommands() {
-  let saved = localStorage.getItem('bgos_commands');
-  if (saved) {
-    try {
-      let parsed = JSON.parse(saved);
-      for (let key in parsed) {
-        let c = parsed[key];
-        commands[key] = {
-          description: c.description,
-          example: c.example,
-          syntax: c.syntax,
-          error: c.error || '',
-          execute: (args) => {
-            if (c.syntax && args.length === 0) {
-              return c.error || ('Использование: ' + c.syntax);
-            }
-            try {
-              let func = new Function('args', c.code);
-              return func(args);
-            } catch (err) {
-              return `Ошибка выполнения команды: ${err.message}`;
-            }
-          },
-          _codeString: c.code
-        };
+    function getNextSchoolDuty(fromDate) {
+      let cur = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
+      cur.setDate(cur.getDate() + 1);
+
+      // Search ahead up to 120 days for next school day
+      for (let i = 0; i < 120; i++) {
+        const d = calculateDuty(cur);
+        if (!d.isHoliday) {
+          return { ...d, date: new Date(cur) };
+        }
+        cur.setDate(cur.getDate() + 1);
       }
-      window.commands = commands;
-    } catch (e) {
-      printToTerminal('Ошибка загрузки сохранённых команд: ' + e.message);
+      return null;
     }
-  }
-}
 
-// Сохранение всего состояния: команд + загрузочных текстов
-function saveState() {
-  saveCommands();
-  localStorage.setItem('bgos_cmtexts', JSON.stringify({
-    texts: cmtext,
-    useDefaultTexts: useDefaultTexts
-  }));
-}
+    function autoScaleDeskText() {
+      const nameElements = document.querySelectorAll('.desk-names-text');
+      nameElements.forEach(el => {
+        if (!el) return;
+        let fontSize = 13; // Max size
+        el.style.fontSize = fontSize + 'px';
+        const parent = el.parentElement;
+        if (!parent) return;
 
-// Загрузка всего состояния
-function loadState() {
-  loadCommands();
-  let saved = localStorage.getItem('bgos_cmtexts');
-  if (saved) {
-    try {
-      let obj = JSON.parse(saved);
-      if (obj.texts && Array.isArray(obj.texts)) {
-        cmtext = obj.texts;
-      }
-      if (typeof obj.useDefaultTexts === 'boolean') {
-        useDefaultTexts = obj.useDefaultTexts;
-      }
-      updateLoadingText();
-    } catch (e) {
-      printToTerminal('Ошибка загрузки сохранённых текстов: ' + e.message);
+        // Reduce font size until text fits inside card container
+        while ((el.offsetHeight > parent.offsetHeight || el.offsetWidth > parent.offsetWidth) && fontSize > 8) {
+          fontSize -= 0.5;
+          el.style.fontSize = fontSize + 'px';
+        }
+      });
     }
-  }
-}
 
-// Запуск сохранённых cmglobal патчей при старте
-(function loadCmglobalPatches() {
-  try {
-    let storeJson = localStorage.getItem('bgos_cmglobal_store');
-    if (storeJson) {
-      let store = JSON.parse(storeJson);
-      for (let name in store) {
-        try {
-          new Function(store[name])();
-          printToTerminal(`Применён сохранённый cmglobal патч: ${name}`);
-        } catch (e) {
-          printToTerminal(`Ошибка выполнения cmglobal патча ${name}: ${e.message}`);
+    function renderUI() {
+      // 1. Update Date Picker Value
+      const picker = document.getElementById('datePicker');
+      if (picker) {
+        const y = currentDate.getFullYear();
+        const m = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const d = String(currentDate.getDate()).padStart(2, '0');
+        picker.value = `${y}-${m}-${d}`;
+      }
+
+      // 2. Compute Duty
+      const currentDuty = calculateDuty(currentDate);
+      const nextDuty = getNextSchoolDuty(currentDate);
+
+      // Holiday Banner
+      const holidayBanner = document.getElementById('holidayBanner');
+      if (holidayBanner) {
+        if (currentDuty.isHoliday) {
+          holidayBanner.style.display = 'inline-block';
+          holidayBanner.textContent = `🌴 ${currentDuty.name} 🌴`;
+        } else {
+          holidayBanner.style.display = 'none';
         }
       }
+
+      // 3. Clear Desks Styling
+      for (let r = 1; r <= 3; r++) {
+        for (let d = 1; d <= 5; d++) {
+          const key = `${r}-${d}`;
+          const card = document.getElementById(`desk-${key}`);
+          const nameEl = document.getElementById(`names-${key}`);
+          const badgeEl = document.getElementById(`badge-${key}`);
+
+          if (card) {
+            card.className = 'desk-card';
+          }
+          if (nameEl) {
+            nameEl.textContent = students[key] || '';
+          }
+          if (badgeEl) {
+            badgeEl.className = 'desk-badge';
+            badgeEl.textContent = '';
+            badgeEl.style.display = 'none';
+          }
+        }
+      }
+
+      // Highlight Today's Duty
+      if (!currentDuty.isHoliday && currentDuty.key) {
+        const card = document.getElementById(`desk-${currentDuty.key}`);
+        const badge = document.getElementById(`badge-${currentDuty.key}`);
+        if (card) card.classList.add('desk-today');
+        if (badge) {
+          badge.textContent = 'СЕГОДНЯ';
+          badge.style.display = 'inline-block';
+        }
+      }
+
+      // Highlight Tomorrow's Duty
+      if (nextDuty && nextDuty.key && nextDuty.key !== currentDuty.key) {
+        const card = document.getElementById(`desk-${nextDuty.key}`);
+        const badge = document.getElementById(`badge-${nextDuty.key}`);
+        if (card) card.classList.add('desk-tomorrow');
+        if (badge) {
+          badge.textContent = 'ЗАВТРА';
+          badge.style.display = 'inline-block';
+        }
+      }
+
+      // 4. Update Main Sketch Result Box
+      const mainText = document.getElementById('resultMainText');
+      const subText = document.getElementById('resultSubText');
+      const nextText = document.getElementById('resultNextText');
+
+      if (currentDuty.isHoliday) {
+        if (mainText) {
+          mainText.textContent = 'КАНИКУЛЫ!';
+          mainText.style.color = '#dc2626';
+        }
+        if (subText) subText.textContent = currentDuty.name;
+      } else {
+        if (mainText) {
+          mainText.textContent = `${currentDuty.desk} ПАРТА, ${currentDuty.row} РЯД`;
+          mainText.style.color = '#16a34a'; // Green match from doodle
+        }
+        const studentNames = students[currentDuty.key] || 'Не назначены';
+        if (subText) subText.textContent = `За этой партой: ${studentNames}`;
+      }
+
+      if (nextDuty && nextText) {
+        const formattedDate = `${nextDuty.date.getDate()}.${String(nextDuty.date.getMonth() + 1).padStart(2, '0')}`;
+        nextText.textContent = `Следующее дежурство (${formattedDate}): ${nextDuty.desk} парта, ${nextDuty.row} ряд`;
+      }
+
+      // Auto scale fonts
+      setTimeout(autoScaleDeskText, 10);
+
+      // Draw SVG Route
+      requestAnimationFrame(drawRouteSvg);
     }
-  } catch (e) {
-    printToTerminal('Ошибка загрузки cmglobal патчей: ' + e.message);
-  }
-})();
 
-// Запуск команд
-async function runCommand(cmdLine) {
-  if (!cmdLine.trim()) return;
-  printToTerminal('> ' + cmdLine);
-  let parts = cmdLine.split(' ');
-  let cmd = parts[0];
-  let args = parts.slice(1);
-  if (!(cmd in commands)) {
-    printToTerminal(`Ошибка: команда "${cmd}" не найдена. Для списка команд введите /help`);
-    return;
-  }
-  let command = commands[cmd];
-  try {
-    let output = command.execute(args);
-    if (output instanceof Promise) {
-      output = await output;
-    }
-    printToTerminal(output);
-  } catch (e) {
-    printToTerminal(`Ошибка при выполнении команды "${cmd}": ${e.message}`);
-  }
-}
+    function drawRouteSvg() {
+      const path = document.getElementById('routePath');
+      const wrapper = document.getElementById('gridWrapper');
+      const svg = document.getElementById('routeSvg');
 
-// Обработчик нажатия кнопки отправки команды
-btnSend.onclick = async () => {
-  await runCommand(input.value);
-  input.value = '';
-  input.focus();
-};
-
-// Обработка Enter в поле ввода
-input.addEventListener('keydown', async e => {
-  if (e.key === 'Enter') {
-    await runCommand(input.value);
-    input.value = '';
-    e.preventDefault();
-  }
-});
-
-// Кнопка загрузки JSON - запуск выбора файла
-btnLoadJson.onclick = () => {
-  fileInput.value = null;
-  fileInput.click();
-};
-
-// Обработка выбора JSON-файла с расширенной поддержкой cmglobal
-fileInput.onchange = e => {
-  let file = e.target.files[0];
-  if (!file) return;
-  let reader = new FileReader();
-  reader.onload = evt => {
-    try {
-      let data = JSON.parse(evt.target.result);
-      if (!data.type) {
-        printToTerminal('Ошибка: в JSON должен быть указан тип: cmtext, cmdata, cmpack, cmsolo или cmglobal');
+      if (!path || !wrapper || !svg || !showRoute) {
+        if (path) path.setAttribute('d', '');
         return;
       }
-      if (data.type === 'cmtext' || data.type === 'cmdata') {
-        if (Array.isArray(data.texts)) {
-          cmtext = data.texts;
-          useDefaultTexts = false;
-          saveState();
-          updateLoadingText();
-          clearInterval(loadingTextInterval);
-          loadingTextInterval = setInterval(updateLoadingText, 1500);
-          printToTerminal(`Загружено ${cmtext.length} текстов формата ${data.type}.`);
-        } else {
-          printToTerminal('Ошибка: в формате ' + data.type + ' поле texts должно быть массивом.');
-        }
-        if (data.commands && typeof data.commands === 'object' && data.type === 'cmdata') {
-          let added = 0, updated = 0;
-          for (let key in data.commands) {
-            let c = data.commands[key];
-            if (!c.description || !c.example || !c.syntax || !c.error || !c.code) {
-              printToTerminal(`Пропущена команда ${key} из-за неполных данных`);
-              continue;
-            }
-            if(commands.hasOwnProperty(key)) updated++; else added++;
-            commands[key] = {
-              description: c.description,
-              example: c.example,
-              syntax: c.syntax,
-              error: c.error,
-              execute: (args) => {
-                if(c.syntax && args.length === 0) {
-                  return c.error;
-                }
-                try {
-                  let func = new Function('args', c.code);
-                  return func(args);
-                } catch(err) {
-                  return `Ошибка выполнения команды: ${err.message}`;
-                }
-              },
-              _codeString: c.code
-            };
+
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const points = [];
+
+      for (let r = 1; r <= 3; r++) {
+        for (let d = 1; d <= 5; d++) {
+          const card = document.getElementById(`desk-${r}-${d}`);
+          if (card) {
+            const rect = card.getBoundingClientRect();
+            points.push({
+              x: rect.left + rect.width / 2 - wrapperRect.left,
+              y: rect.top + rect.height / 2 - wrapperRect.top
+            });
           }
-          saveState();
-          window.commands = commands;
-          printToTerminal(`Загружено команд: ${added}, обновлено команд: ${updated}`);
         }
-      } else if (data.type === 'cmpack') {
-        if (!data.commands || typeof data.commands !== 'object') {
-          printToTerminal('Ошибка: cmpack должен содержать объект commands');
-          return;
-        }
-        let added = 0, updated = 0;
-        for (let key in data.commands) {
-          let c = data.commands[key];
-          if (!c.description || !c.example || !c.syntax || !c.error || !c.code) {
-            printToTerminal(`Пропущена команда ${key} из-за неполных данных`);
-            continue;
-          }
-          if(commands.hasOwnProperty(key)) updated++; else added++;
-          commands[key] = {
-            description: c.description,
-            example: c.example,
-            syntax: c.syntax,
-            error: c.error,
-            execute: (args) => {
-              if(c.syntax && args.length === 0) {
-                return c.error;
-              }
-              try {
-                let func = new Function('args', c.code);
-                return func(args);
-              } catch(err) {
-                return `Ошибка выполнения команды: ${err.message}`;
-              }
-            },
-            _codeString: c.code
-          };
-        }
-        saveState();
-        window.commands = commands;
-        printToTerminal(`Загружено команд: ${added}, обновлено команд: ${updated}`);
-      } else if (data.type === 'cmsolo') {
-        if (!data.command || !data.description || !data.example || !data.syntax || !data.error || !data.code) {
-          printToTerminal('Ошибка: cmsolo должен содержать все поля команды');
-          return;
-        }
-        let isUpdate = commands.hasOwnProperty(data.command);
-        commands[data.command] = {
-          description: data.description,
-          example: data.example,
-          syntax: data.syntax,
-          error: data.error,
-          execute: (args) => {
-            if(data.syntax && args.length === 0) {
-              return data.error;
-            }
-            try {
-              let func = new Function('args', data.code);
-              return func(args);
-            } catch(err) {
-              return `Ошибка выполнения команды: ${err.message}`;
-            }
-          },
-          _codeString: data.code
-        };
-        saveState();
-        window.commands = commands;
-        printToTerminal((isUpdate ? 'Обновлена' : 'Добавлена') + ` команда ${data.command}.`);
-      } else if (data.type === 'cmglobal') {
-        if (!data.code || !data.name) {
-          printToTerminal('Ошибка: в формате cmglobal обязательны поля name и code');
-          return;
-        }
-        try {
-          let storeJson = localStorage.getItem('bgos_cmglobal_store');
-          let store = storeJson ? JSON.parse(storeJson) : {};
-          store[data.name] = data.code;
-          localStorage.setItem('bgos_cmglobal_store', JSON.stringify(store));
-          let func = new Function(data.code);
-          func();
-          printToTerminal(`Выполнен и сохранён cmglobal патч: ${data.name}`);
-        } catch (err) {
-          printToTerminal('Ошибка выполнения cmglobal: ' + err.message);
-        }
-      } else {
-        printToTerminal(`Ошибка: неизвестный тип ${data.type}`);
       }
-    } catch (err) {
-      printToTerminal('Ошибка парсинга JSON: ' + err.message);
+
+      if (points.length < 15) return;
+
+      // Build snake path
+      let dStr = `M ${points[0].x} ${points[0].y} `;
+      // Row 1 (0 to 4)
+      for (let i = 1; i <= 4; i++) dStr += `L ${points[i].x} ${points[i].y} `;
+
+      // Turn Row 1 -> Row 2
+      const p4 = points[4], p5 = points[5];
+      const midX1 = (p4.x + p5.x) / 2;
+      dStr += `C ${midX1} ${p4.y + 35}, ${midX1} ${p5.y - 35}, ${p5.x} ${p5.y} `;
+
+      // Row 2 (5 to 9)
+      for (let i = 6; i <= 9; i++) dStr += `L ${points[i].x} ${points[i].y} `;
+
+      // Turn Row 2 -> Row 3
+      const p9 = points[9], p10 = points[10];
+      const midX2 = (p9.x + p10.x) / 2;
+      dStr += `C ${midX2} ${p9.y + 35}, ${midX2} ${p10.y - 35}, ${p10.x} ${p10.y} `;
+
+      // Row 3 (10 to 14)
+      for (let i = 11; i <= 14; i++) dStr += `L ${points[i].x} ${points[i].y} `;
+
+      path.setAttribute('d', dStr);
     }
-  };
-  reader.readAsText(file);
-};
 
-commands['/delcmglobal'] = {
-  description: 'Удалить сохранённый cmglobal патч по имени',
-  example: '/delcmglobal myPatch',
-  syntax: '/delcmglobal <name>',
-  error: 'Использование: /delcmglobal <name>',
-  execute: (args) => {
-    if (args.length === 0) return 'Ошибка: укажите имя патча';
-    let name = args[0];
-    let storeJson = localStorage.getItem('bgos_cmglobal_store');
-    if (!storeJson) return `Патч с именем "${name}" не найден`;
-    let store = JSON.parse(storeJson);
-    if (!(name in store)) return `Патч с именем "${name}" не найден`;
-    delete store[name];
-    localStorage.setItem('bgos_cmglobal_store', JSON.stringify(store));
-    return `Патч "${name}" удалён и не будет применяться при следующем запуске`;
-  }
-};
+    function toggleRoute() {
+      showRoute = !showRoute;
+      const btn = document.getElementById('routeToggleBtn');
+      if (btn) {
+        btn.innerHTML = showRoute ? '<span>📌 Маршрут: Вкл</span>' : '<span>📌 Маршрут: Выкл</span>';
+      }
+      drawRouteSvg();
+    }
 
-loadState();
-input.focus();
-printToTerminal('Добро пожаловать в BGOS 2.7! Введите /help для списка команд.');
-requestAnimationFrame(animateProgress);
+    function addDays(n) {
+      currentDate.setDate(currentDate.getDate() + n);
+      renderUI();
+    }
 
-</script>
+    function resetToToday() {
+      currentDate = new Date();
+      renderUI();
+    }
+
+    function onDateChange() {
+      const picker = document.getElementById('datePicker');
+      if (picker && picker.value) {
+        const parts = picker.value.split('-');
+        currentDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        renderUI();
+      }
+    }
+
+    function selectDesk(row, desk) {
+      const key = `${row}-${desk}`;
+      const mainText = document.getElementById('resultMainText');
+      const subText = document.getElementById('resultSubText');
+
+      if (mainText) {
+        mainText.textContent = `${desk} ПАРТА, ${row} РЯД`;
+        mainText.style.color = '#0284c7';
+      }
+      if (subText) {
+        subText.textContent = `За этой партой: ${students[key] || 'Не назначены'}`;
+      }
+    }
+
+    /* Modal management */
+    function openModal() {
+      const container = document.getElementById('modalInputs');
+      if (!container) return;
+      container.innerHTML = '';
+
+      for (let r = 1; r <= 3; r++) {
+        const title = document.createElement('div');
+        title.className = 'modal-row-title';
+        title.textContent = `${r} РЯД`;
+        container.appendChild(title);
+
+        for (let d = 1; d <= 5; d++) {
+          const key = `${r}-${d}`;
+          const wrap = document.createElement('div');
+          wrap.className = 'modal-desk-item';
+          wrap.innerHTML = `
+            <label>Парта ${d}:</label>
+            <input type="text" id="input-${key}" value="${students[key] || ''}" placeholder="ФИО учеников">
+          `;
+          container.appendChild(wrap);
+        }
+      }
+
+      const modal = document.getElementById('editModal');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('editModal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function saveModalStudents() {
+      for (let r = 1; r <= 3; r++) {
+        for (let d = 1; d <= 5; d++) {
+          const key = `${r}-${d}`;
+          const input = document.getElementById(`input-${key}`);
+          if (input) {
+            students[key] = input.value.trim();
+          }
+        }
+      }
+      safeSetStorage('duty_students', students);
+      closeModal();
+      renderUI();
+    }
+
+    function resetDefaultStudents() {
+      students = { ...DEFAULT_STUDENTS };
+      safeSetStorage('duty_students', students);
+      openModal();
+      renderUI();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      students = safeGetStorage('duty_students', DEFAULT_STUDENTS);
+      renderUI();
+
+      window.addEventListener('resize', () => {
+        autoScaleDeskText();
+        drawRouteSvg();
+      });
+
+      window.addEventListener('scroll', () => {
+        requestAnimationFrame(drawRouteSvg);
+      });
+    });
+  </script>
 </body>
-</html>
+  </html>
