@@ -18,7 +18,8 @@
       --today-bg: #d1fae5;
       --tomorrow-yellow: #f59e0b;
       --tomorrow-bg: #fef3c7;
-      --sketch-red: #dc2626;
+      --unused-border: #cbd5e1;
+      --unused-bg: #f8fafc;
     }
 
     * {
@@ -37,7 +38,7 @@
       flex-direction: column;
       align-items: center;
       user-select: none;
-      padding-bottom: 24px;
+      padding-bottom: 28px;
     }
 
     header {
@@ -58,7 +59,6 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      flex-wrap: wrap;
     }
 
     .brand {
@@ -91,19 +91,13 @@
       color: #fde68a;
     }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
     .btn {
-      background: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.18);
       color: #ffffff;
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 7px 12px;
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 8px 14px;
       border-radius: 8px;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
@@ -113,7 +107,7 @@
     }
 
     .btn:hover {
-      background: rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.28);
     }
 
     .btn:active {
@@ -140,7 +134,6 @@
       gap: 14px;
     }
 
-    /* Chalkboard Section */
     .chalkboard {
       background: var(--board-bg);
       border: 8px solid var(--board-border);
@@ -149,7 +142,6 @@
       color: #ffffff;
       text-align: center;
       box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 8px 16px rgba(0,0,0,0.15);
-      position: relative;
     }
 
     .chalkboard-subtitle {
@@ -202,12 +194,6 @@
       padding: 4px 14px;
       border-radius: 10px;
       border: 2px solid #fca5a5;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.85; transform: scale(0.98); }
     }
 
     .blackboard-indicator {
@@ -225,17 +211,10 @@
       max-width: 360px;
     }
 
-    .classroom-wrapper {
-      position: relative;
-      width: 100%;
-    }
-
     .classroom-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      position: relative;
-      z-index: 10;
     }
 
     .row-column {
@@ -257,13 +236,13 @@
       border-bottom: 1px dashed #cbd5e1;
     }
 
-    /* Strict uniform sizing for all 15 desks */
+    /* Uniform Desk Size */
     .desk-card {
       background: #ffffff;
       border: 2px solid #cbd5e1;
       border-radius: 12px;
       padding: 6px 4px;
-      height: 96px; /* Exactly fixed height for pixel perfection */
+      height: 96px; /* Fixed height for exact alignment */
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -325,12 +304,11 @@
       letter-spacing: 0.3px;
     }
 
-    /* Highlighted Desk States */
+    /* State Highlight Colors */
     .desk-today {
       background: var(--today-bg) !important;
       border-color: var(--today-green) !important;
       box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
-      z-index: 12;
     }
 
     .desk-today .desk-title {
@@ -346,7 +324,6 @@
       background: var(--tomorrow-bg) !important;
       border-color: var(--tomorrow-yellow) !important;
       box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
-      z-index: 11;
     }
 
     .desk-tomorrow .desk-title {
@@ -358,16 +335,17 @@
       color: #ffffff;
     }
 
-    /* SVG overlay for route */
-    #routeSvg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 20;
-      overflow: visible;
+    /* Unused Desk Styling */
+    .desk-unused {
+      background: var(--unused-bg) !important;
+      border: 2px dashed var(--unused-border) !important;
+      opacity: 0.7;
+    }
+
+    .desk-unused .desk-names-text {
+      color: #94a3b8 !important;
+      font-style: italic;
+      font-weight: 600;
     }
 
     .result-section {
@@ -378,7 +356,6 @@
       margin-top: 4px;
     }
 
-    /* Big Red Sketch Box Button */
     .sketch-btn {
       background: #ef4444;
       color: #ffffff;
@@ -398,7 +375,6 @@
       box-shadow: 0 1px 0 #991b1b;
     }
 
-    /* Hand-Drawn / Sketch Style Result Box */
     .sketch-result-card {
       background: #fffbeb;
       border: 4px dashed #92400e;
@@ -408,7 +384,6 @@
       max-width: 440px;
       text-align: center;
       box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.08);
-      position: relative;
     }
 
     .sketch-result-title {
@@ -458,9 +433,6 @@
       font-weight: 800;
       color: #1e293b;
       margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .holiday-grid {
@@ -475,7 +447,6 @@
       }
     }
 
-    /* Modal dialog */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -548,7 +519,6 @@
       width: 65px;
       font-weight: 700;
       color: #475569;
-      shrink: 0;
     }
 
     .modal-desk-item input {
@@ -585,19 +555,13 @@
           <p>Автоматическое расписание класса</p>
         </div>
       </div>
-      <div class="header-actions">
-        <button class="btn" id="routeToggleBtn" onclick="toggleRoute()">
-          <span>📌 Маршрут: Вкл</span>
-        </button>
-        <button class="btn" onclick="openModal()">
-          <span>⚙️ Ученики</span>
-        </button>
-      </div>
+      <button class="btn" onclick="openModal()">
+        <span>⚙️ Ученики</span>
+      </button>
     </div>
   </header>
 
   <main>
-    <!-- Chalkboard Title Banner -->
     <section class="chalkboard">
       <div class="chalkboard-subtitle">Классный уголок</div>
       <div class="chalkboard-title">КТО ДЕЖУРНЫЙ?</div>
@@ -614,56 +578,42 @@
       </div>
     </section>
 
-    <!-- Front Classroom Indicator -->
     <div class="blackboard-indicator">
       📋 ДОСКА И СТОЛ УЧИТЕЛЯ (ПЕРЕДНЯЯ ЧАСТЬ КЛАССА)
     </div>
 
-    <div class="classroom-wrapper" id="gridWrapper">
-      <!-- SVG Snake Line -->
-      <svg id="routeSvg">
-        <defs>
-          <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#b91c1c"/>
-          </marker>
-        </defs>
-        <path id="routePath" d="" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrow)" opacity="0.85" />
-      </svg>
-
-      <!-- 3 Columns (1, 2, 3 РЯД) -->
-      <div class="classroom-grid" id="classroomGrid">
-        
-        <!-- ROW 1 -->
-        <div class="row-column">
-          <div class="row-header">1 РЯД (у окна)</div>
-          <div class="desk-card" id="desk-1-1" onclick="selectDesk(1,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-1"></span></div></div>
-          <div class="desk-card" id="desk-1-2" onclick="selectDesk(1,2)"><div class="desk-title">ПАРТА 2</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-2"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-2"></span></div></div>
-          <div class="desk-card" id="desk-1-3" onclick="selectDesk(1,3)"><div class="desk-title">ПАРТА 3</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-3"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-3"></span></div></div>
-          <div class="desk-card" id="desk-1-4" onclick="selectDesk(1,4)"><div class="desk-title">ПАРТА 4</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-4"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-4"></span></div></div>
-          <div class="desk-card" id="desk-1-5" onclick="selectDesk(1,5)"><div class="desk-title">ПАРТА 5</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-5"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-5"></span></div></div>
-        </div>
-
-        <!-- ROW 2 -->
-        <div class="row-column">
-          <div class="row-header">2 РЯД (середина)</div>
-          <div class="desk-card" id="desk-2-1" onclick="selectDesk(2,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-1"></span></div></div>
-          <div class="desk-card" id="desk-2-2" onclick="selectDesk(2,2)"><div class="desk-title">ПАРТА 2</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-2"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-2"></span></div></div>
-          <div class="desk-card" id="desk-2-3" onclick="selectDesk(2,3)"><div class="desk-title">ПАРТА 3</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-3"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-3"></span></div></div>
-          <div class="desk-card" id="desk-2-4" onclick="selectDesk(2,4)"><div class="desk-title">ПАРТА 4</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-4"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-4"></span></div></div>
-          <div class="desk-card" id="desk-2-5" onclick="selectDesk(2,5)"><div class="desk-title">ПАРТА 5</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-5"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-5"></span></div></div>
-        </div>
-
-        <!-- ROW 3 -->
-        <div class="row-column">
-          <div class="row-header">3 РЯД (у двери)</div>
-          <div class="desk-card" id="desk-3-1" onclick="selectDesk(3,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-1"></span></div></div>
-          <div class="desk-card" id="desk-3-2" onclick="selectDesk(3,2)"><div class="desk-title">ПАРТА 2</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-2"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-2"></span></div></div>
-          <div class="desk-card" id="desk-3-3" onclick="selectDesk(3,3)"><div class="desk-title">ПАРТА 3</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-3"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-3"></span></div></div>
-          <div class="desk-card" id="desk-3-4" onclick="selectDesk(3,4)"><div class="desk-title">ПАРТА 4</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-4"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-4"></span></div></div>
-          <div class="desk-card" id="desk-3-5" onclick="selectDesk(3,5)"><div class="desk-title">ПАРТА 5</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-5"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-5"></span></div></div>
-        </div>
-
+    <div class="classroom-grid" id="classroomGrid">
+      
+      <!-- ROW 1 -->
+      <div class="row-column">
+        <div class="row-header">1 РЯД (у окна)</div>
+        <div class="desk-card" id="desk-1-1" onclick="selectDesk(1,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-1"></span></div></div>
+        <div class="desk-card" id="desk-1-2" onclick="selectDesk(1,2)"><div class="desk-title">ПАРТА 2</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-2"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-2"></span></div></div>
+        <div class="desk-card" id="desk-1-3" onclick="selectDesk(1,3)"><div class="desk-title">ПАРТА 3</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-3"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-3"></span></div></div>
+        <div class="desk-card" id="desk-1-4" onclick="selectDesk(1,4)"><div class="desk-title">ПАРТА 4</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-4"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-4"></span></div></div>
+        <div class="desk-card" id="desk-1-5" onclick="selectDesk(1,5)"><div class="desk-title">ПАРТА 5</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-5"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-5"></span></div></div>
       </div>
+
+      <!-- ROW 2 -->
+      <div class="row-column">
+        <div class="row-header">2 РЯД (середина)</div>
+        <div class="desk-card" id="desk-2-1" onclick="selectDesk(2,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-1"></span></div></div>
+        <div class="desk-card" id="desk-2-2" onclick="selectDesk(2,2)"><div class="desk-title">ПАРТА 2</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-2"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-2"></span></div></div>
+        <div class="desk-card" id="desk-2-3" onclick="selectDesk(2,3)"><div class="desk-title">ПАРТА 3</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-3"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-3"></span></div></div>
+        <div class="desk-card" id="desk-2-4" onclick="selectDesk(2,4)"><div class="desk-title">ПАРТА 4</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-4"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-4"></span></div></div>
+        <div class="desk-card" id="desk-2-5" onclick="selectDesk(2,5)"><div class="desk-title">ПАРТА 5</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-5"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-5"></span></div></div>
+      </div>
+
+      <!-- ROW 3 -->
+      <div class="row-column">
+        <div class="row-header">3 РЯД (у двери)</div>
+        <div class="desk-card" id="desk-3-1" onclick="selectDesk(3,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-1"></span></div></div>
+        <div class="desk-card" id="desk-3-2" onclick="selectDesk(3,2)"><div class="desk-title">ПАРТА 2</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-2"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-2"></span></div></div>
+        <div class="desk-card" id="desk-3-3" onclick="selectDesk(3,3)"><div class="desk-title">ПАРТА 3</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-3"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-3"></span></div></div>
+        <div class="desk-card" id="desk-3-4" onclick="selectDesk(3,4)"><div class="desk-title">ПАРТА 4</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-4"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-4"></span></div></div>
+        <div class="desk-card" id="desk-3-5" onclick="selectDesk(3,5)"><div class="desk-title">ПАРТА 5</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-5"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-5"></span></div></div>
+      </div>
+
     </div>
 
     <section class="result-section">
@@ -671,13 +621,12 @@
 
       <div class="sketch-result-card">
         <div class="sketch-result-title">Дежурные на выбранную дату</div>
-        <div class="sketch-main-text" id="resultMainText">3 ПАРТА, 1 РЯД</div>
+        <div class="sketch-main-text" id="resultMainText">3 ПАРТА, 3 РЯД</div>
         <div class="sketch-sub-text" id="resultSubText">За этой партой: -</div>
         <div class="sketch-next-text" id="resultNextText">Следующее дежурство: -</div>
       </div>
     </section>
 
-    <!-- Holiday Reference Card -->
     <section class="holiday-info-card">
       <div class="holiday-info-title">
         <span>🗓️ График каникул (дежурства приостанавливаются)</span>
@@ -691,16 +640,14 @@
     </section>
   </main>
 
-  <!-- Modal Dialog for editing students -->
+  <!-- Modal Dialog -->
   <div class="modal-overlay" id="editModal">
     <div class="modal-box">
       <div class="modal-header">
         <span>Редактирование учеников</span>
         <button class="btn" onclick="closeModal()">✕</button>
       </div>
-      <div class="modal-body" id="modalInputs">
-        <!-- Injected dynamically -->
-      </div>
+      <div class="modal-body" id="modalInputs"></div>
       <div class="modal-footer">
         <button class="btn" style="color: #dc2626;" onclick="resetDefaultStudents()">Сбросить</button>
         <button class="btn btn-yellow" onclick="saveModalStudents()">Сохранить</button>
@@ -710,28 +657,26 @@
 
   <script>
     const DEFAULT_STUDENTS = {
-      "1-1": "Иванов И., Петров П.",
-      "1-2": "Сидоров С., Смирнова А.",
-      "1-3": "Кузнецов М., Попова Е.",
-      "1-4": "Васильев Д., Соколова О.",
-      "1-5": "Новиков А., Морозова В.",
-      "2-1": "Фёдоров Г., Волкова Т.",
-      "2-2": "Алексеев В., Лебедева М.",
-      "2-3": "Семёнов И., Козлова Н.",
-      "2-4": "Павлов К., Степанова Ю.",
-      "2-5": "Николаев Д., Макарова Е.",
-      "3-1": "Орлов А., Андреева С.",
-      "3-2": "Захаров М., Зайцева Д.",
-      "3-3": "Соловьёв П., Борисова К.",
-      "3-4": "Яковлев А., Григорьева И.",
-      "3-5": "Романов Е., Воробьёва Н."
+      "1-1": "Воронова А., Коноваленко А.",
+      "1-2": "Рубенок А., Шленок Г.",
+      "1-3": "Андреева В., Евменова С.",
+      "1-4": "Атрошкин А., Макаров З.",
+      "1-5": "Неиспользованный",
+      "2-1": "Козлов Д.",
+      "2-2": "Шавель Е., Титова Я.",
+      "2-3": "Волосевич А., Молодчёнок Я.",
+      "2-4": "Игнатов Р., Агеев А.",
+      "2-5": "Неиспользованный",
+      "3-1": "Логинова М., Котович Н.",
+      "3-2": "Дятловский И., Карпенко И.",
+      "3-3": "Гуринов Г., Гвоздов Б.",
+      "3-4": "Крыштапович М., Короневский М.",
+      "3-5": "Гридюшко А."
     };
 
     let students = {};
     let currentDate = new Date();
-    let showRoute = true;
 
-    // Safe LocalStorage
     function safeGetStorage(key, defaultVal) {
       try {
         const val = localStorage.getItem(key);
@@ -745,27 +690,23 @@
       try {
         localStorage.setItem(key, JSON.stringify(val));
       } catch (e) {
-        // Ignore Storage Exceptions in Chrome file://
+        // Ignore file:// storage limitations
       }
     }
 
     function checkIsHoliday(dateObj) {
-      const m = dateObj.getMonth() + 1; // 1-12
-      const d = dateObj.getDate();      // 1-31
+      const m = dateObj.getMonth() + 1;
+      const d = dateObj.getDate();
 
-      // Autumn: 01.11 - 08.11
       if (m === 11 && d >= 1 && d <= 8) {
         return { isHoliday: true, name: 'Осенние каникулы (01.11 – 08.11)' };
       }
-      // Winter: 25.12 - 10.01
       if ((m === 12 && d >= 25) || (m === 1 && d <= 10)) {
         return { isHoliday: true, name: 'Зимние каникулы (25.12 – 10.01)' };
       }
-      // Spring: 21.03 - 28.03
       if (m === 3 && d >= 21 && d <= 28) {
         return { isHoliday: true, name: 'Весенние каникулы (21.03 – 28.03)' };
       }
-      // Summer: 12.06 - 31.08
       if ((m === 6 && d >= 12) || m === 7 || m === 8) {
         return { isHoliday: true, name: 'Летние каникулы (12.06 – 31.08)' };
       }
@@ -776,7 +717,6 @@
     function getAcademicYearStart(dateObj) {
       const year = dateObj.getFullYear();
       const month = dateObj.getMonth() + 1;
-      // If month >= September (9), start Sept 1 of current year, else Sept 1 of previous year
       if (month >= 9) {
         return new Date(year, 8, 1);
       } else {
@@ -784,10 +724,33 @@
       }
     }
 
+    function isUnusedDesk(key) {
+      const text = (students[key] || '').trim().toLowerCase();
+      return text === 'неиспользованный' || text === 'неиспользована' || text === '—' || text === '--------';
+    }
+
+    function getActiveDesksList() {
+      const list = [];
+      for (let r = 1; r <= 3; r++) {
+        for (let d = 1; d <= 5; d++) {
+          const key = `${r}-${d}`;
+          if (!isUnusedDesk(key)) {
+            list.push({ row: r, desk: d, key: key });
+          }
+        }
+      }
+      return list;
+    }
+
     function calculateDuty(targetDate) {
       const holiday = checkIsHoliday(targetDate);
       if (holiday.isHoliday) {
         return { isHoliday: true, name: holiday.name };
+      }
+
+      const activeDesks = getActiveDesksList();
+      if (activeDesks.length === 0) {
+        return { isHoliday: true, name: 'Нет активных парт' };
       }
 
       const startDate = getAcademicYearStart(targetDate);
@@ -806,17 +769,16 @@
         return { isHoliday: true, name: 'Каникулы' };
       }
 
-      // Index 0 to 14
-      const index = (schoolDaysCount - 1) % 15;
-      const row = Math.floor(index / 5) + 1;
-      const desk = (index % 5) + 1;
+      // Rotate strictly over active desks
+      const activeIndex = (schoolDaysCount - 1) % activeDesks.length;
+      const currentActive = activeDesks[activeIndex];
 
       return {
         isHoliday: false,
-        row: row,
-        desk: desk,
-        key: `${row}-${desk}`,
-        index: index
+        row: currentActive.row,
+        desk: currentActive.desk,
+        key: currentActive.key,
+        index: activeIndex
       };
     }
 
@@ -824,7 +786,6 @@
       let cur = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
       cur.setDate(cur.getDate() + 1);
 
-      // Search ahead up to 120 days for next school day
       for (let i = 0; i < 120; i++) {
         const d = calculateDuty(cur);
         if (!d.isHoliday) {
@@ -839,12 +800,11 @@
       const nameElements = document.querySelectorAll('.desk-names-text');
       nameElements.forEach(el => {
         if (!el) return;
-        let fontSize = 13; // Max size
+        let fontSize = 13;
         el.style.fontSize = fontSize + 'px';
         const parent = el.parentElement;
         if (!parent) return;
 
-        // Reduce font size until text fits inside card container
         while ((el.offsetHeight > parent.offsetHeight || el.offsetWidth > parent.offsetWidth) && fontSize > 8) {
           fontSize -= 0.5;
           el.style.fontSize = fontSize + 'px';
@@ -853,7 +813,7 @@
     }
 
     function renderUI() {
-      // 1. Update Date Picker Value
+      // 1. Date Picker Update
       const picker = document.getElementById('datePicker');
       if (picker) {
         const y = currentDate.getFullYear();
@@ -862,11 +822,11 @@
         picker.value = `${y}-${m}-${d}`;
       }
 
-      // 2. Compute Duty
+      // 2. Calculations
       const currentDuty = calculateDuty(currentDate);
       const nextDuty = getNextSchoolDuty(currentDate);
 
-      // Holiday Banner
+      // Holiday Tag
       const holidayBanner = document.getElementById('holidayBanner');
       if (holidayBanner) {
         if (currentDuty.isHoliday) {
@@ -877,7 +837,7 @@
         }
       }
 
-      // 3. Clear Desks Styling
+      // 3. Reset Desks Visuals
       for (let r = 1; r <= 3; r++) {
         for (let d = 1; d <= 5; d++) {
           const key = `${r}-${d}`;
@@ -887,10 +847,15 @@
 
           if (card) {
             card.className = 'desk-card';
+            if (isUnusedDesk(key)) {
+              card.classList.add('desk-unused');
+            }
           }
+
           if (nameEl) {
             nameEl.textContent = students[key] || '';
           }
+
           if (badgeEl) {
             badgeEl.className = 'desk-badge';
             badgeEl.textContent = '';
@@ -899,7 +864,7 @@
         }
       }
 
-      // Highlight Today's Duty
+      // Today Highlight
       if (!currentDuty.isHoliday && currentDuty.key) {
         const card = document.getElementById(`desk-${currentDuty.key}`);
         const badge = document.getElementById(`badge-${currentDuty.key}`);
@@ -910,7 +875,7 @@
         }
       }
 
-      // Highlight Tomorrow's Duty
+      // Tomorrow Highlight
       if (nextDuty && nextDuty.key && nextDuty.key !== currentDuty.key) {
         const card = document.getElementById(`desk-${nextDuty.key}`);
         const badge = document.getElementById(`badge-${nextDuty.key}`);
@@ -921,7 +886,7 @@
         }
       }
 
-      // 4. Update Main Sketch Result Box
+      // 4. Update Main Sketch Result Text
       const mainText = document.getElementById('resultMainText');
       const subText = document.getElementById('resultSubText');
       const nextText = document.getElementById('resultNextText');
@@ -935,7 +900,7 @@
       } else {
         if (mainText) {
           mainText.textContent = `${currentDuty.desk} ПАРТА, ${currentDuty.row} РЯД`;
-          mainText.style.color = '#16a34a'; // Green match from doodle
+          mainText.style.color = '#10b981';
         }
         const studentNames = students[currentDuty.key] || 'Не назначены';
         if (subText) subText.textContent = `За этой партой: ${studentNames}`;
@@ -946,72 +911,7 @@
         nextText.textContent = `Следующее дежурство (${formattedDate}): ${nextDuty.desk} парта, ${nextDuty.row} ряд`;
       }
 
-      // Auto scale fonts
       setTimeout(autoScaleDeskText, 10);
-
-      // Draw SVG Route
-      requestAnimationFrame(drawRouteSvg);
-    }
-
-    function drawRouteSvg() {
-      const path = document.getElementById('routePath');
-      const wrapper = document.getElementById('gridWrapper');
-      const svg = document.getElementById('routeSvg');
-
-      if (!path || !wrapper || !svg || !showRoute) {
-        if (path) path.setAttribute('d', '');
-        return;
-      }
-
-      const wrapperRect = wrapper.getBoundingClientRect();
-      const points = [];
-
-      for (let r = 1; r <= 3; r++) {
-        for (let d = 1; d <= 5; d++) {
-          const card = document.getElementById(`desk-${r}-${d}`);
-          if (card) {
-            const rect = card.getBoundingClientRect();
-            points.push({
-              x: rect.left + rect.width / 2 - wrapperRect.left,
-              y: rect.top + rect.height / 2 - wrapperRect.top
-            });
-          }
-        }
-      }
-
-      if (points.length < 15) return;
-
-      // Build snake path
-      let dStr = `M ${points[0].x} ${points[0].y} `;
-      // Row 1 (0 to 4)
-      for (let i = 1; i <= 4; i++) dStr += `L ${points[i].x} ${points[i].y} `;
-
-      // Turn Row 1 -> Row 2
-      const p4 = points[4], p5 = points[5];
-      const midX1 = (p4.x + p5.x) / 2;
-      dStr += `C ${midX1} ${p4.y + 35}, ${midX1} ${p5.y - 35}, ${p5.x} ${p5.y} `;
-
-      // Row 2 (5 to 9)
-      for (let i = 6; i <= 9; i++) dStr += `L ${points[i].x} ${points[i].y} `;
-
-      // Turn Row 2 -> Row 3
-      const p9 = points[9], p10 = points[10];
-      const midX2 = (p9.x + p10.x) / 2;
-      dStr += `C ${midX2} ${p9.y + 35}, ${midX2} ${p10.y - 35}, ${p10.x} ${p10.y} `;
-
-      // Row 3 (10 to 14)
-      for (let i = 11; i <= 14; i++) dStr += `L ${points[i].x} ${points[i].y} `;
-
-      path.setAttribute('d', dStr);
-    }
-
-    function toggleRoute() {
-      showRoute = !showRoute;
-      const btn = document.getElementById('routeToggleBtn');
-      if (btn) {
-        btn.innerHTML = showRoute ? '<span>📌 Маршрут: Вкл</span>' : '<span>📌 Маршрут: Выкл</span>';
-      }
-      drawRouteSvg();
     }
 
     function addDays(n) {
@@ -1038,6 +938,17 @@
       const mainText = document.getElementById('resultMainText');
       const subText = document.getElementById('resultSubText');
 
+      if (isUnusedDesk(key)) {
+        if (mainText) {
+          mainText.textContent = 'НЕ ИСПОЛЬЗУЕТСЯ';
+          mainText.style.color = '#64748b';
+        }
+        if (subText) {
+          subText.textContent = 'Эта парта не участвует в дежурствах';
+        }
+        return;
+      }
+
       if (mainText) {
         mainText.textContent = `${desk} ПАРТА, ${row} РЯД`;
         mainText.style.color = '#0284c7';
@@ -1047,7 +958,6 @@
       }
     }
 
-    /* Modal management */
     function openModal() {
       const container = document.getElementById('modalInputs');
       if (!container) return;
@@ -1065,7 +975,7 @@
           wrap.className = 'modal-desk-item';
           wrap.innerHTML = `
             <label>Парта ${d}:</label>
-            <input type="text" id="input-${key}" value="${students[key] || ''}" placeholder="ФИО учеников">
+            <input type="text" id="input-${key}" value="${students[key] || ''}" placeholder="ФИО учеников или Неиспользованный">
           `;
           container.appendChild(wrap);
         }
@@ -1108,13 +1018,8 @@
 
       window.addEventListener('resize', () => {
         autoScaleDeskText();
-        drawRouteSvg();
-      });
-
-      window.addEventListener('scroll', () => {
-        requestAnimationFrame(drawRouteSvg);
       });
     });
   </script>
 </body>
-  </html>
+</html>
