@@ -96,7 +96,6 @@
       letter-spacing: 0.8px;
     }
 
-    /* Controls & Buttons */
     .controls {
       display: flex;
       gap: 10px;
@@ -117,21 +116,23 @@
       gap: 6px;
     }
 
-    .btn-primary { 
-      background: var(--accent); 
-      color: white; 
+    .btn-primary {
+      background: var(--accent);
+      color: white;
     }
-    .btn-primary:hover { 
-      background: var(--accent-hover); 
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
     }
-    
-    .btn-outline { 
-      background: transparent; 
-      border: 1px solid var(--border-color); 
-      color: var(--text-muted); 
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
     }
-    .btn-outline:hover { 
-      background: #eaeaea; 
+
+    .btn-outline:hover {
+      background: #eaeaea;
       color: var(--text-main);
     }
 
@@ -140,6 +141,7 @@
       border: 1px solid var(--error);
       color: var(--error);
     }
+
     .btn-danger:hover {
       background: var(--error);
       color: white;
@@ -174,7 +176,6 @@
       display: none;
     }
 
-    /* Classroom Layout Floor Plan */
     .blackboard-indicator {
       background: #2d3436;
       color: #ffffff;
@@ -245,7 +246,8 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.08);
     }
 
-    .desk-card::before, .desk-card::after {
+    .desk-card::before,
+    .desk-card::after {
       content: '';
       position: absolute;
       bottom: -6px;
@@ -255,6 +257,7 @@
       border-radius: 2px;
       transition: background 0.15s ease;
     }
+
     .desk-card::before { left: 18%; }
     .desk-card::after { right: 18%; }
 
@@ -309,7 +312,8 @@
       border-top: 4px solid var(--success) !important;
     }
 
-    .desk-today::before, .desk-today::after {
+    .desk-today::before,
+    .desk-today::after {
       background: var(--success);
     }
 
@@ -329,7 +333,8 @@
       border-top: 4px solid var(--accent) !important;
     }
 
-    .desk-tomorrow::before, .desk-tomorrow::after {
+    .desk-tomorrow::before,
+    .desk-tomorrow::after {
       background: var(--accent);
     }
 
@@ -350,7 +355,8 @@
       opacity: 0.5;
     }
 
-    .desk-unused::before, .desk-unused::after {
+    .desk-unused::before,
+    .desk-unused::after {
       display: none;
     }
 
@@ -359,7 +365,6 @@
       font-style: italic;
     }
 
-    /* Output Results Area */
     .output-area {
       background: #2d3436;
       color: #fab1a0;
@@ -440,7 +445,6 @@
       margin-bottom: 2px;
     }
 
-    /* Modal Dialogs */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -523,7 +527,8 @@
       color: var(--text-muted);
     }
 
-    .modal-desk-item input, .promo-input {
+    .modal-desk-item input,
+    .promo-input {
       flex: 1;
       padding: 8px 10px;
       border: 1px solid var(--border-color);
@@ -532,7 +537,8 @@
       transition: border-color 0.2s;
     }
 
-    .modal-desk-item input:focus, .promo-input:focus {
+    .modal-desk-item input:focus,
+    .promo-input:focus {
       border-color: var(--accent);
     }
 
@@ -552,7 +558,6 @@
       white-space: pre-line;
     }
 
-    /* Effects Container */
     #fx-container {
       position: fixed;
       inset: 0;
@@ -561,7 +566,6 @@
       overflow: hidden;
     }
 
-    /* Particle Animations */
     .particle {
       position: absolute;
       top: -30px;
@@ -575,7 +579,6 @@
       }
     }
 
-    /* Spring River Background Effect */
     .spring-river {
       position: fixed;
       bottom: 0;
@@ -595,7 +598,7 @@
       bottom: 0;
       width: 200%;
       height: 100%;
-      background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 0px, rgba(255, 255, 255, 0.15) 20px, transparent 20px, transparent 40px);
+      background: repeating-linear-gradient(45deg, rgba(255,255,255,0.15) 0px, rgba(255,255,255,0.15) 20px, transparent 20px, transparent 40px);
       animation: wave 8s linear infinite;
     }
 
@@ -605,6 +608,7 @@
     }
   </style>
 </head>
+
 <body>
 
 <div id="fx-container"></div>
@@ -623,7 +627,6 @@
     </div>
   </header>
 
-  <!-- Controls Card -->
   <div class="card">
     <label>ВЫБОР ДАТЫ</label>
     <div class="controls">
@@ -638,7 +641,6 @@
     </div>
   </div>
 
-  <!-- Results Output Card -->
   <div class="card">
     <label>РЕЗУЛЬТАТ ОБРАБОТКИ</label>
     <div class="output-area">
@@ -654,7 +656,6 @@
     </div>
   </div>
 
-  <!-- Classroom Floor Plan Card -->
   <div class="card">
     <label>СХЕМА КАБИНЕТА</label>
     <div class="blackboard-indicator">
@@ -663,8 +664,7 @@
 
     <div class="classroom-scroll-wrapper">
       <div class="classroom-grid" id="classroomGrid">
-        
-        <!-- ROW 1 -->
+
         <div class="row-column">
           <div class="row-header">1 РЯД (у окна)</div>
           <div class="desk-card" id="desk-1-1" onclick="selectDesk(1,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-1"></span></div></div>
@@ -674,7 +674,6 @@
           <div class="desk-card" id="desk-1-5" onclick="selectDesk(1,5)"><div class="desk-title">ПАРТА 5</div><div class="desk-names-container"><div class="desk-names-text" id="names-1-5"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-1-5"></span></div></div>
         </div>
 
-        <!-- ROW 2 -->
         <div class="row-column">
           <div class="row-header">2 РЯД (середина)</div>
           <div class="desk-card" id="desk-2-1" onclick="selectDesk(2,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-1"></span></div></div>
@@ -684,7 +683,6 @@
           <div class="desk-card" id="desk-2-5" onclick="selectDesk(2,5)"><div class="desk-title">ПАРТА 5</div><div class="desk-names-container"><div class="desk-names-text" id="names-2-5"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-2-5"></span></div></div>
         </div>
 
-        <!-- ROW 3 -->
         <div class="row-column">
           <div class="row-header">3 РЯД (у двери)</div>
           <div class="desk-card" id="desk-3-1" onclick="selectDesk(3,1)"><div class="desk-title">ПАРТА 1</div><div class="desk-names-container"><div class="desk-names-text" id="names-3-1"></div></div><div class="desk-badge-slot"><span class="desk-badge" id="badge-3-1"></span></div></div>
@@ -698,7 +696,6 @@
     </div>
   </div>
 
-  <!-- Holiday Info Card -->
   <div class="card">
     <label>🗓️ ГРАФИК КАНИКУЛ (ДЕЖУРСТВА ПРИОСТАНАВЛИВАЮТСЯ)</label>
     <div class="holiday-grid">
@@ -711,12 +708,11 @@
 
 </div>
 
-<!-- Modal: Edit Students -->
 <div class="modal-overlay" id="editModal">
   <div class="modal-box">
     <div class="modal-header">
       <span>Редактирование учеников</span>
-      <button class="btn-outline" style="padding: 4px 10px;" onclick="closeModal('editModal')">✕</button>
+      <button class="btn-outline" style="padding:4px 10px;" onclick="closeModal('editModal')">✕</button>
     </div>
     <div class="modal-body" id="modalInputs"></div>
     <div class="modal-footer">
@@ -726,12 +722,11 @@
   </div>
 </div>
 
-<!-- Modal: About -->
 <div class="modal-overlay" id="aboutModal">
   <div class="modal-box">
     <div class="modal-header">
       <span>О нас</span>
-      <button class="btn-outline" style="padding: 4px 10px;" onclick="closeModal('aboutModal')">✕</button>
+      <button class="btn-outline" style="padding:4px 10px;" onclick="closeModal('aboutModal')">✕</button>
     </div>
     <div class="modal-body">
       <div class="about-text">
@@ -751,17 +746,16 @@
   </div>
 </div>
 
-<!-- Modal: Promo Codes -->
 <div class="modal-overlay" id="promoModal">
   <div class="modal-box">
     <div class="modal-header">
       <span>🎁 Секретное меню промокодов</span>
-      <button class="btn-outline" style="padding: 4px 10px;" onclick="closeModal('promoModal')">✕</button>
+      <button class="btn-outline" style="padding:4px 10px;" onclick="closeModal('promoModal')">✕</button>
     </div>
     <div class="modal-body">
       <label for="promoInput">Введите промокод:</label>
       <input type="text" id="promoInput" class="promo-input" placeholder="Введите код...">
-      <div id="promoStatus" style="font-size: 12px; margin-top: 5px; font-weight: 600;"></div>
+      <div id="promoStatus" style="font-size:12px;margin-top:5px;font-weight:600;"></div>
     </div>
     <div class="modal-footer">
       <button class="btn-primary" onclick="submitPromoCode()">Активировать</button>
@@ -770,483 +764,716 @@
 </div>
 
 <script>
-  const DEFAULT_STUDENTS = {
-    "1-1": "Воронова А., Коноваленко А.",
-    "1-2": "Рубенок А., Шленок Г.",
-    "1-3": "Андреева В., Евменова С.",
-    "1-4": "Атрошкин А., Макаров З.",
-    "1-5": "Неиспользованный",
-    "2-1": "Козлов Д.",
-    "2-2": "Шавель Е., Титова Я.",
-    "2-3": "Волосевич А., Молодчёнок Я.",
-    "2-4": "Игнатов Р., Агеев А.",
-    "2-5": "Неиспользованный",
-    "3-1": "Логинова М., Котович Н.",
-    "3-2": "Дятловский И., Карпенко И.",
-    "3-3": "Гуринов Г., Гвоздов Б.",
-    "3-4": "Крыштапович М., Короневский М.",
-    "3-5": "Гридюшко А."
-  };
+const DEFAULT_STUDENTS = {
+  "1-1": "Воронова А., Коноваленко А.",
+  "1-2": "Рубенок А., Шленок Г.",
+  "1-3": "Андреева В., Евменова С.",
+  "1-4": "Атрошкин А., Макаров З.",
+  "1-5": "Неиспользованный",
+  "2-1": "Козлов Д.",
+  "2-2": "Шавель Е., Титова Я.",
+  "2-3": "Волосевич А., Молодчёнок Я.",
+  "2-4": "Игнатов Р., Агеев А.",
+  "2-5": "Неиспользованный",
+  "3-1": "Логинова М., Котович Н.",
+  "3-2": "Дятловский И., Карпенко И.",
+  "3-3": "Гуринов Г., Гвоздов Б.",
+  "3-4": "Крыштапович М., Короневский М.",
+  "3-5": "Гридюшко А."
+};
 
-  let students = {};
-  let currentDate = new Date();
-  let unusedDeskClickCount = 0;
-  let customUnusedLabel = null; // Для промокода "ЛЕТО"
+let students = {};
+let currentDate = new Date();
+let unusedDeskClickCount = 0;
+let customUnusedLabel = null;
 
-  /* =========================================================
-     СИСТЕМА ПРОМОКОДОВ (ЗДЕСЬ ЛЕГКО ДОБАВЛЯТЬ И УДАЛЯТЬ)
-     ========================================================= */
-  const PROMO_CODES = {
-    "ЗИМА": function() {
-      toggleParticleEffect(["❄", "❅", "❆"]);
-      return "Режим 'ЗИМА' переключен!";
-    },
-    "ОСЕНЬ": function() {
-      toggleParticleEffect(["🍂", "🍁", "🍃"]);
-      return "Режим 'ОСЕНЬ' переключен!";
-    },
-    "ЛЕТО": function() {
-      if (customUnusedLabel === "Каникулы") {
-        customUnusedLabel = null;
-        renderUI();
-        return "Режим 'ЛЕТО' выключен.";
-      } else {
-        customUnusedLabel = "Каникулы";
-        renderUI();
-        return "Промокод ЛЕТО активирован! Все неиспользованные парты стали 'Каникулы'.";
-      }
-    },
-    "ВЕСНА": function() {
-      const river = document.getElementById('springRiver');
-      if (!river) return "Ошибка!";
-      if (river.style.display === "block") {
-        river.style.display = "none";
-        return "Режим 'ВЕСНА' выключен.";
-      } else {
-        river.style.display = "block";
-        return "Режим 'ВЕСНА' активирован! На фоне появился ручеёк.";
-      }
-    },
-    "1XBET": function() {
-      window.open("https://bogdangotj.github.io/-/", "_blank");
-      return "Переход на 1xBet...";
-    }
-  };
+const PROMO_CODES = {
+  "ЗИМА": function() {
+    toggleParticleEffect(["❄", "❅", "❆"]);
+    return "Режим 'ЗИМА' переключен!";
+  },
 
-  let activeParticleInterval = null;
+  "ОСЕНЬ": function() {
+    toggleParticleEffect(["🍂", "🍁", "🍃"]);
+    return "Режим 'ОСЕНЬ' переключен!";
+  },
 
-  function toggleParticleEffect(symbols) {
-    const fxContainer = document.getElementById('fx-container');
-    if (!fxContainer) return;
-
-    if (activeParticleInterval) {
-      clearInterval(activeParticleInterval);
-      activeParticleInterval = null;
-      fxContainer.innerHTML = '';
-      return;
-    }
-
-    activeParticleInterval = setInterval(() => {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-      particle.style.left = Math.random() * 100 + 'vw';
-      particle.style.fontSize = (12 + Math.random() * 16) + 'px';
-      particle.style.animationDuration = (3 + Math.random() * 5) + 's';
-      particle.style.opacity = Math.random();
-
-      fxContainer.appendChild(particle);
-
-      setTimeout(() => {
-        particle.remove();
-      }, 8000);
-    }, 250);
-  }
-
-  function submitPromoCode() {
-    const input = document.getElementById('promoInput');
-    const status = document.getElementById('promoStatus');
-    if (!input || !status) return;
-
-    const code = input.value.trim().toUpperCase();
-
-    if (PROMO_CODES[code]) {
-      const msg = PROMO_CODES[code]();
-      status.style.color = "var(--success)";
-      status.textContent = msg;
-      input.value = "";
+  "ЛЕТО": function() {
+    if (customUnusedLabel === "Каникулы") {
+      customUnusedLabel = null;
+      renderUI();
+      return "Режим 'ЛЕТО' выключен.";
     } else {
-      status.style.color = "var(--error)";
-      status.textContent = "Неверный промокод!";
+      customUnusedLabel = "Каникулы";
+      renderUI();
+      return "Промокод ЛЕТО активирован! Все неиспользованные парты стали 'Каникулы'.";
     }
-  }
+  },
 
-  /* ========================================================= */
+  "ВЕСНА": function() {
+    const river = document.getElementById('springRiver');
 
-  function safeGetStorage(key, defaultVal) {
-    try {
-      const val = localStorage.getItem(key);
-      return val ? JSON.parse(val) : defaultVal;
-    } catch (e) {
-      return defaultVal;
-    }
-  }
+    if (!river) return "Ошибка!";
 
-  function safeSetStorage(key, val) {
-    try {
-      localStorage.setItem(key, JSON.stringify(val));
-    } catch (e) {
-      // Ignore storage limitations
-    }
-  }
-
-  function checkIsHoliday(dateObj) {
-    const m = dateObj.getMonth() + 1;
-    const d = dateObj.getDate();
-
-    if (m === 11 && d >= 1 && d <= 8) {
-      return { isHoliday: true, name: 'Осенние каникулы (01.11 – 08.11)' };
-    }
-    if ((m === 12 && d >= 25) || (m === 1 && d <= 10)) {
-      return { isHoliday: true, name: 'Зимние каникулы (25.12 – 10.01)' };
-    }
-    if (m === 3 && d >= 21 && d <= 28) {
-      return { isHoliday: true, name: 'Весенние каникулы (21.03 – 28.03)' };
-    }
-    if ((m === 6 && d >= 12) || m === 7 || m === 8) {
-      return { isHoliday: true, name: 'Летние каникулы (12.06 – 31.08)' };
-    }
-
-    return { isHoliday: false, name: '' };
-  }
-
-  function getAcademicYearStart(dateObj) {
-    const year = dateObj.getFullYear();
-    const month = dateObj.getMonth() + 1;
-    if (month >= 9) {
-      return new Date(year, 8, 1);
+    if (river.style.display === "block") {
+      river.style.display = "none";
+      return "Режим 'ВЕСНА' выключен.";
     } else {
-      return new Date(year - 1, 8, 1);
+      river.style.display = "block";
+      return "Режим 'ВЕСНА' активирован! На фоне появился ручеёк.";
     }
+  },
+
+  "1XBET": function() {
+    window.open("https://bogdangotj.github.io/-/", "_blank");
+    return "Переход на 1xBet...";
+  }
+};
+
+let activeParticleInterval = null;
+
+function toggleParticleEffect(symbols) {
+  const fxContainer = document.getElementById('fx-container');
+
+  if (!fxContainer) return;
+
+  if (activeParticleInterval) {
+    clearInterval(activeParticleInterval);
+    activeParticleInterval = null;
+    fxContainer.innerHTML = '';
+    return;
   }
 
-  function isUnusedDesk(key) {
-    const text = (students[key] || '').trim().toLowerCase();
-    return text === 'неиспользованный' || text === 'неиспользована' || text === '—' || text === '--------';
+  activeParticleInterval = setInterval(() => {
+    const particle = document.createElement('div');
+
+    particle.className = 'particle';
+    particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    particle.style.left = Math.random() * 100 + 'vw';
+    particle.style.fontSize = (12 + Math.random() * 16) + 'px';
+    particle.style.animationDuration = (3 + Math.random() * 5) + 's';
+    particle.style.opacity = Math.random();
+
+    fxContainer.appendChild(particle);
+
+    setTimeout(() => {
+      particle.remove();
+    }, 8000);
+  }, 250);
+}
+
+function submitPromoCode() {
+  const input = document.getElementById('promoInput');
+  const status = document.getElementById('promoStatus');
+
+  if (!input || !status) return;
+
+  const code = input.value.trim().toUpperCase();
+
+  if (PROMO_CODES[code]) {
+    const msg = PROMO_CODES[code]();
+
+    status.style.color = "var(--success)";
+    status.textContent = msg;
+    input.value = "";
+  } else {
+    status.style.color = "var(--error)";
+    status.textContent = "Неверный промокод!";
   }
+}
 
-  function getActiveDesksList() {
-    const list = [];
-    for (let r = 1; r <= 3; r++) {
-      for (let d = 1; d <= 5; d++) {
-        const key = `${r}-${d}`;
-        if (!isUnusedDesk(key)) {
-          list.push({ row: r, desk: d, key: key });
-        }
-      }
-    }
-    return list;
+function safeGetStorage(key, defaultVal) {
+  try {
+    const val = localStorage.getItem(key);
+    return val ? JSON.parse(val) : defaultVal;
+  } catch (e) {
+    return defaultVal;
   }
+}
 
-  function calculateDuty(targetDate) {
-    const holiday = checkIsHoliday(targetDate);
-    if (holiday.isHoliday) {
-      return { isHoliday: true, name: holiday.name };
-    }
+function safeSetStorage(key, val) {
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+  } catch (e) {}
+}
 
-    const activeDesks = getActiveDesksList();
-    if (activeDesks.length === 0) {
-      return { isHoliday: true, name: 'Нет активных парт' };
-    }
+function checkIsHoliday(dateObj) {
+  const m = dateObj.getMonth() + 1;
+  const d = dateObj.getDate();
 
-    const startDate = getAcademicYearStart(targetDate);
-    let cur = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-    let schoolDaysCount = 0;
-
-    while (cur <= targetDate) {
-      const h = checkIsHoliday(cur);
-      if (!h.isHoliday) {
-        schoolDaysCount++;
-      }
-      cur.setDate(cur.getDate() + 1);
-    }
-
-    if (schoolDaysCount === 0) {
-      return { isHoliday: true, name: 'Каникулы' };
-    }
-
-    const activeIndex = (schoolDaysCount - 1) % activeDesks.length;
-    const currentActive = activeDesks[activeIndex];
-
+  if (m === 11 && d >= 1 && d <= 8) {
     return {
-      isHoliday: false,
-      row: currentActive.row,
-      desk: currentActive.desk,
-      key: currentActive.key,
-      index: activeIndex
+      isHoliday: true,
+      name: 'Осенние каникулы (01.11 – 08.11)'
     };
   }
 
-  function getNextSchoolDuty(fromDate) {
-    let cur = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
+  if ((m === 12 && d >= 25) || (m === 1 && d <= 10)) {
+    return {
+      isHoliday: true,
+      name: 'Зимние каникулы (25.12 – 10.01)'
+    };
+  }
+
+  if (m === 3 && d >= 21 && d <= 28) {
+    return {
+      isHoliday: true,
+      name: 'Весенние каникулы (21.03 – 28.03)'
+    };
+  }
+
+  if ((m === 6 && d >= 12) || m === 7 || m === 8) {
+    return {
+      isHoliday: true,
+      name: 'Летние каникулы (12.06 – 31.08)'
+    };
+  }
+
+  return {
+    isHoliday: false,
+    name: ''
+  };
+}
+
+/* СУББОТА И ВОСКРЕСЕНЬЕ — ВЫХОДНЫЕ */
+function checkIsWeekend(dateObj) {
+  const day = dateObj.getDay();
+
+  return day === 0 || day === 6;
+}
+
+function getAcademicYearStart(dateObj) {
+  const year = dateObj.getFullYear();
+  const month = dateObj.getMonth() + 1;
+
+  if (month >= 9) {
+    return new Date(year, 8, 1);
+  } else {
+    return new Date(year - 1, 8, 1);
+  }
+}
+
+function isUnusedDesk(key) {
+  const text = (students[key] || '').trim().toLowerCase();
+
+  return text === 'неиспользованный' ||
+         text === 'неиспользована' ||
+         text === '—' ||
+         text === '--------';
+}
+
+function getActiveDesksList() {
+  const list = [];
+
+  for (let r = 1; r <= 3; r++) {
+    for (let d = 1; d <= 5; d++) {
+      const key = `${r}-${d}`;
+
+      if (!isUnusedDesk(key)) {
+        list.push({
+          row: r,
+          desk: d,
+          key: key
+        });
+      }
+    }
+  }
+
+  return list;
+}
+
+function calculateDuty(targetDate) {
+  /* Сначала проверяем каникулы */
+  const holiday = checkIsHoliday(targetDate);
+
+  if (holiday.isHoliday) {
+    return {
+      isHoliday: true,
+      isWeekend: false,
+      name: holiday.name
+    };
+  }
+
+  /* Потом обычные выходные */
+  if (checkIsWeekend(targetDate)) {
+    return {
+      isHoliday: true,
+      isWeekend: true,
+      name: 'Выходные!'
+    };
+  }
+
+  const activeDesks = getActiveDesksList();
+
+  if (activeDesks.length === 0) {
+    return {
+      isHoliday: true,
+      isWeekend: false,
+      name: 'Нет активных парт'
+    };
+  }
+
+  const startDate = getAcademicYearStart(targetDate);
+
+  let cur = new Date(
+    startDate.getFullYear(),
+    startDate.getMonth(),
+    startDate.getDate()
+  );
+
+  let schoolDaysCount = 0;
+
+  while (cur <= targetDate) {
+    const h = checkIsHoliday(cur);
+
+    /*
+      В очередь засчитываются только:
+      - не каникулы
+      - не суббота
+      - не воскресенье
+    */
+    if (!h.isHoliday && !checkIsWeekend(cur)) {
+      schoolDaysCount++;
+    }
+
     cur.setDate(cur.getDate() + 1);
-
-    for (let i = 0; i < 120; i++) {
-      const d = calculateDuty(cur);
-      if (!d.isHoliday) {
-        return { ...d, date: new Date(cur) };
-      }
-      cur.setDate(cur.getDate() + 1);
-    }
-    return null;
   }
 
-  function autoScaleDeskText() {
-    const nameElements = document.querySelectorAll('.desk-names-text');
-    nameElements.forEach(el => {
-      if (!el) return;
-      let fontSize = 13;
+  if (schoolDaysCount === 0) {
+    return {
+      isHoliday: true,
+      isWeekend: false,
+      name: 'Каникулы'
+    };
+  }
+
+  const activeIndex =
+    (schoolDaysCount - 1) % activeDesks.length;
+
+  const currentActive =
+    activeDesks[activeIndex];
+
+  return {
+    isHoliday: false,
+    isWeekend: false,
+    row: currentActive.row,
+    desk: currentActive.desk,
+    key: currentActive.key,
+    index: activeIndex
+  };
+}
+
+function getNextSchoolDuty(fromDate) {
+  let cur = new Date(
+    fromDate.getFullYear(),
+    fromDate.getMonth(),
+    fromDate.getDate()
+  );
+
+  cur.setDate(cur.getDate() + 1);
+
+  for (let i = 0; i < 120; i++) {
+    const d = calculateDuty(cur);
+
+    if (!d.isHoliday) {
+      return {
+        ...d,
+        date: new Date(cur)
+      };
+    }
+
+    cur.setDate(cur.getDate() + 1);
+  }
+
+  return null;
+}
+
+function autoScaleDeskText() {
+  const nameElements =
+    document.querySelectorAll('.desk-names-text');
+
+  nameElements.forEach(el => {
+    if (!el) return;
+
+    let fontSize = 13;
+
+    el.style.fontSize = fontSize + 'px';
+
+    const parent = el.parentElement;
+
+    if (!parent) return;
+
+    while (
+      (el.offsetHeight > parent.offsetHeight ||
+       el.offsetWidth > parent.offsetWidth) &&
+      fontSize > 8
+    ) {
+      fontSize -= 0.5;
       el.style.fontSize = fontSize + 'px';
-      const parent = el.parentElement;
-      if (!parent) return;
+    }
+  });
+}
 
-      while ((el.offsetHeight > parent.offsetHeight || el.offsetWidth > parent.offsetWidth) && fontSize > 8) {
-        fontSize -= 0.5;
-        el.style.fontSize = fontSize + 'px';
-      }
-    });
+function renderUI() {
+  const picker = document.getElementById('datePicker');
+
+  if (picker) {
+    const y = currentDate.getFullYear();
+    const m = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const d = String(currentDate.getDate()).padStart(2, '0');
+
+    picker.value = `${y}-${m}-${d}`;
   }
 
-  function renderUI() {
-    // 1. Date Picker Update
-    const picker = document.getElementById('datePicker');
-    if (picker) {
-      const y = currentDate.getFullYear();
-      const m = String(currentDate.getMonth() + 1).padStart(2, '0');
-      const d = String(currentDate.getDate()).padStart(2, '0');
-      picker.value = `${y}-${m}-${d}`;
-    }
+  const currentDuty = calculateDuty(currentDate);
+  const nextDuty = getNextSchoolDuty(currentDate);
 
-    // 2. Calculations
-    const currentDuty = calculateDuty(currentDate);
-    const nextDuty = getNextSchoolDuty(currentDate);
+  const holidayBanner =
+    document.getElementById('holidayBanner');
 
-    // Holiday Tag
-    const holidayBanner = document.getElementById('holidayBanner');
-    if (holidayBanner) {
-      if (currentDuty.isHoliday) {
-        holidayBanner.style.display = 'block';
-        holidayBanner.textContent = `🌴 ${currentDuty.name}`;
-      } else {
-        holidayBanner.style.display = 'none';
-      }
-    }
-
-    // 3. Reset Desks Visuals
-    for (let r = 1; r <= 3; r++) {
-      for (let d = 1; d <= 5; d++) {
-        const key = `${r}-${d}`;
-        const card = document.getElementById(`desk-${key}`);
-        const nameEl = document.getElementById(`names-${key}`);
-        const badgeEl = document.getElementById(`badge-${key}`);
-
-        if (card) {
-          card.className = 'desk-card';
-          if (isUnusedDesk(key)) {
-            card.classList.add('desk-unused');
-          }
-        }
-
-        if (nameEl) {
-          if (isUnusedDesk(key) && customUnusedLabel) {
-            nameEl.textContent = customUnusedLabel;
-          } else {
-            nameEl.textContent = students[key] || '';
-          }
-        }
-
-        if (badgeEl) {
-          badgeEl.className = 'desk-badge';
-          badgeEl.textContent = '';
-          badgeEl.style.display = 'none';
-        }
-      }
-    }
-
-    // Today Highlight
-    if (!currentDuty.isHoliday && currentDuty.key) {
-      const card = document.getElementById(`desk-${currentDuty.key}`);
-      const badge = document.getElementById(`badge-${currentDuty.key}`);
-      if (card) card.classList.add('desk-today');
-      if (badge) {
-        badge.textContent = 'СЕГОДНЯ';
-        badge.style.display = 'inline-block';
-      }
-    }
-
-    // Tomorrow Highlight
-    if (nextDuty && nextDuty.key && nextDuty.key !== currentDuty.key) {
-      const card = document.getElementById(`desk-${nextDuty.key}`);
-      const badge = document.getElementById(`badge-${nextDuty.key}`);
-      if (card) card.classList.add('desk-tomorrow');
-      if (badge) {
-        badge.textContent = 'ЗАВТРА';
-        badge.style.display = 'inline-block';
-      }
-    }
-
-    // 4. Update Main Result Text
-    const mainText = document.getElementById('resultMainText');
-    const subText = document.getElementById('resultSubText');
-    const nextText = document.getElementById('resultNextText');
-
+  if (holidayBanner) {
     if (currentDuty.isHoliday) {
-      if (mainText) {
-        mainText.textContent = 'КАНИКУЛЫ!';
-        mainText.style.color = '#ff7675';
+      holidayBanner.style.display = 'block';
+
+      if (currentDuty.isWeekend) {
+        holidayBanner.textContent = '🏠 ВЫХОДНЫЕ!';
+      } else {
+        holidayBanner.textContent =
+          `🌴 ${currentDuty.name}`;
       }
-      if (subText) subText.textContent = currentDuty.name;
     } else {
-      if (mainText) {
-        mainText.textContent = `${currentDuty.desk} ПАРТА, ${currentDuty.row} РЯД`;
-        mainText.style.color = '#55efc4';
-      }
-      const studentNames = students[currentDuty.key] || 'Не назначены';
-      if (subText) subText.textContent = `За этой партой: ${studentNames}`;
+      holidayBanner.style.display = 'none';
     }
-
-    if (nextDuty && nextText) {
-      const formattedDate = `${nextDuty.date.getDate()}.${String(nextDuty.date.getMonth() + 1).padStart(2, '0')}`;
-      nextText.textContent = `${formattedDate} — ${nextDuty.desk} парта, ${nextDuty.row} ряд (${students[nextDuty.key] || 'Не назначены'})`;
-    }
-
-    setTimeout(autoScaleDeskText, 10);
   }
 
-  function addDays(n) {
-    currentDate.setDate(currentDate.getDate() + n);
+  for (let r = 1; r <= 3; r++) {
+    for (let d = 1; d <= 5; d++) {
+      const key = `${r}-${d}`;
+
+      const card =
+        document.getElementById(`desk-${key}`);
+
+      const nameEl =
+        document.getElementById(`names-${key}`);
+
+      const badgeEl =
+        document.getElementById(`badge-${key}`);
+
+      if (card) {
+        card.className = 'desk-card';
+
+        if (isUnusedDesk(key)) {
+          card.classList.add('desk-unused');
+        }
+      }
+
+      if (nameEl) {
+        if (isUnusedDesk(key) && customUnusedLabel) {
+          nameEl.textContent = customUnusedLabel;
+        } else {
+          nameEl.textContent = students[key] || '';
+        }
+      }
+
+      if (badgeEl) {
+        badgeEl.className = 'desk-badge';
+        badgeEl.textContent = '';
+        badgeEl.style.display = 'none';
+      }
+    }
+  }
+
+  if (!currentDuty.isHoliday && currentDuty.key) {
+    const card =
+      document.getElementById(`desk-${currentDuty.key}`);
+
+    const badge =
+      document.getElementById(`badge-${currentDuty.key}`);
+
+    if (card) {
+      card.classList.add('desk-today');
+    }
+
+    if (badge) {
+      badge.textContent = 'СЕГОДНЯ';
+      badge.style.display = 'inline-block';
+    }
+  }
+
+  if (
+    nextDuty &&
+    nextDuty.key &&
+    nextDuty.key !== currentDuty.key
+  ) {
+    const card =
+      document.getElementById(`desk-${nextDuty.key}`);
+
+    const badge =
+      document.getElementById(`badge-${nextDuty.key}`);
+
+    if (card) {
+      card.classList.add('desk-tomorrow');
+    }
+
+    if (badge) {
+      badge.textContent = 'ЗАВТРА';
+      badge.style.display = 'inline-block';
+    }
+  }
+
+  const mainText =
+    document.getElementById('resultMainText');
+
+  const subText =
+    document.getElementById('resultSubText');
+
+  const nextText =
+    document.getElementById('resultNextText');
+
+  if (currentDuty.isHoliday) {
+    if (mainText) {
+      if (currentDuty.isWeekend) {
+        mainText.textContent = 'ВЫХОДНЫЕ!';
+      } else {
+        mainText.textContent = 'КАНИКУЛЫ!';
+      }
+
+      mainText.style.color = '#ff7675';
+    }
+
+    if (subText) {
+      subText.textContent = currentDuty.name;
+    }
+  } else {
+    if (mainText) {
+      mainText.textContent =
+        `${currentDuty.desk} ПАРТА, ${currentDuty.row} РЯД`;
+
+      mainText.style.color = '#55efc4';
+    }
+
+    const studentNames =
+      students[currentDuty.key] || 'Не назначены';
+
+    if (subText) {
+      subText.textContent =
+        `За этой партой: ${studentNames}`;
+    }
+  }
+
+  if (nextDuty && nextText) {
+    const formattedDate =
+      `${nextDuty.date.getDate()}.${String(
+        nextDuty.date.getMonth() + 1
+      ).padStart(2, '0')}`;
+
+    nextText.textContent =
+      `${formattedDate} — ${nextDuty.desk} парта, ${nextDuty.row} ряд (${students[nextDuty.key] || 'Не назначены'})`;
+  }
+
+  setTimeout(autoScaleDeskText, 10);
+}
+
+function addDays(n) {
+  currentDate.setDate(currentDate.getDate() + n);
+  renderUI();
+}
+
+function resetToToday() {
+  currentDate = new Date();
+  renderUI();
+}
+
+function onDateChange() {
+  const picker =
+    document.getElementById('datePicker');
+
+  if (picker && picker.value) {
+    const parts = picker.value.split('-');
+
+    currentDate = new Date(
+      parseInt(parts[0]),
+      parseInt(parts[1]) - 1,
+      parseInt(parts[2])
+    );
+
     renderUI();
   }
+}
 
-  function resetToToday() {
-    currentDate = new Date();
-    renderUI();
-  }
+function selectDesk(row, desk) {
+  const key = `${row}-${desk}`;
 
-  function onDateChange() {
-    const picker = document.getElementById('datePicker');
-    if (picker && picker.value) {
-      const parts = picker.value.split('-');
-      currentDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-      renderUI();
-    }
-  }
+  const mainText =
+    document.getElementById('resultMainText');
 
-  function selectDesk(row, desk) {
-    const key = `${row}-${desk}`;
-    const mainText = document.getElementById('resultMainText');
-    const subText = document.getElementById('resultSubText');
+  const subText =
+    document.getElementById('resultSubText');
 
-    if (isUnusedDesk(key)) {
-      unusedDeskClickCount++;
-      if (unusedDeskClickCount >= 15) {
-        unusedDeskClickCount = 0;
-        openPromoModal();
-      }
+  if (isUnusedDesk(key)) {
+    unusedDeskClickCount++;
 
-      if (mainText) {
-        mainText.textContent = customUnusedLabel ? customUnusedLabel.toUpperCase() : 'НЕ ИСПОЛЬЗУЕТСЯ';
-        mainText.style.color = '#b2bec3';
-      }
-      if (subText) {
-        subText.textContent = 'Эта парта не участвует в дежурствах';
-      }
-      return;
+    if (unusedDeskClickCount >= 15) {
+      unusedDeskClickCount = 0;
+      openPromoModal();
     }
 
     if (mainText) {
-      mainText.textContent = `${desk} ПАРТА, ${row} РЯД`;
-      mainText.style.color = '#74b9ff';
+      mainText.textContent =
+        customUnusedLabel
+          ? customUnusedLabel.toUpperCase()
+          : 'НЕ ИСПОЛЬЗУЕТСЯ';
+
+      mainText.style.color = '#b2bec3';
     }
+
     if (subText) {
-      subText.textContent = `За этой партой: ${students[key] || 'Не назначены'}`;
+      subText.textContent =
+        'Эта парта не участвует в дежурствах';
+    }
+
+    return;
+  }
+
+  if (mainText) {
+    mainText.textContent =
+      `${desk} ПАРТА, ${row} РЯД`;
+
+    mainText.style.color = '#74b9ff';
+  }
+
+  if (subText) {
+    subText.textContent =
+      `За этой партой: ${students[key] || 'Не назначены'}`;
+  }
+}
+
+function openModal() {
+  const container =
+    document.getElementById('modalInputs');
+
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  for (let r = 1; r <= 3; r++) {
+    const title =
+      document.createElement('div');
+
+    title.className = 'modal-row-title';
+    title.textContent = `${r} РЯД`;
+
+    container.appendChild(title);
+
+    for (let d = 1; d <= 5; d++) {
+      const key = `${r}-${d}`;
+
+      const wrap =
+        document.createElement('div');
+
+      wrap.className = 'modal-desk-item';
+
+      wrap.innerHTML = `
+        <label>Парта ${d}:</label>
+        <input
+          type="text"
+          id="input-${key}"
+          value="${students[key] || ''}"
+          placeholder="ФИО учеников или Неиспользованный"
+        >
+      `;
+
+      container.appendChild(wrap);
     }
   }
 
-  function openModal() {
-    const container = document.getElementById('modalInputs');
-    if (!container) return;
-    container.innerHTML = '';
+  const modal =
+    document.getElementById('editModal');
 
-    for (let r = 1; r <= 3; r++) {
-      const title = document.createElement('div');
-      title.className = 'modal-row-title';
-      title.textContent = `${r} РЯД`;
-      container.appendChild(title);
+  if (modal) {
+    modal.classList.add('active');
+  }
+}
 
-      for (let d = 1; d <= 5; d++) {
-        const key = `${r}-${d}`;
-        const wrap = document.createElement('div');
-        wrap.className = 'modal-desk-item';
-        wrap.innerHTML = `
-          <label>Парта ${d}:</label>
-          <input type="text" id="input-${key}" value="${students[key] || ''}" placeholder="ФИО учеников или Неиспользованный">
-        `;
-        container.appendChild(wrap);
+function openAboutModal() {
+  const modal =
+    document.getElementById('aboutModal');
+
+  if (modal) {
+    modal.classList.add('active');
+  }
+}
+
+function openPromoModal() {
+  const status =
+    document.getElementById('promoStatus');
+
+  if (status) {
+    status.textContent = '';
+  }
+
+  const modal =
+    document.getElementById('promoModal');
+
+  if (modal) {
+    modal.classList.add('active');
+  }
+}
+
+function closeModal(modalId) {
+  const modal =
+    document.getElementById(modalId);
+
+  if (modal) {
+    modal.classList.remove('active');
+  }
+}
+
+function saveModalStudents() {
+  for (let r = 1; r <= 3; r++) {
+    for (let d = 1; d <= 5; d++) {
+      const key = `${r}-${d}`;
+
+      const input =
+        document.getElementById(`input-${key}`);
+
+      if (input) {
+        students[key] = input.value.trim();
       }
     }
-
-    const modal = document.getElementById('editModal');
-    if (modal) modal.classList.add('active');
   }
 
-  function openAboutModal() {
-    const modal = document.getElementById('aboutModal');
-    if (modal) modal.classList.add('active');
-  }
+  safeSetStorage('duty_students', students);
 
-  function openPromoModal() {
-    const status = document.getElementById('promoStatus');
-    if (status) status.textContent = '';
-    const modal = document.getElementById('promoModal');
-    if (modal) modal.classList.add('active');
-  }
+  closeModal('editModal');
+  renderUI();
+}
 
-  function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) modal.classList.remove('active');
-  }
+function resetDefaultStudents() {
+  students = {
+    ...DEFAULT_STUDENTS
+  };
 
-  function saveModalStudents() {
-    for (let r = 1; r <= 3; r++) {
-      for (let d = 1; d <= 5; d++) {
-        const key = `${r}-${d}`;
-        const input = document.getElementById(`input-${key}`);
-        if (input) {
-          students[key] = input.value.trim();
-        }
-      }
-    }
-    safeSetStorage('duty_students', students);
-    closeModal('editModal');
-    renderUI();
-  }
+  safeSetStorage('duty_students', students);
 
-  function resetDefaultStudents() {
-    students = { ...DEFAULT_STUDENTS };
-    safeSetStorage('duty_students', students);
-    openModal();
-    renderUI();
-  }
+  openModal();
+  renderUI();
+}
 
-  window.addEventListener('DOMContentLoaded', () => {
-    students = safeGetStorage('duty_students', DEFAULT_STUDENTS);
-    renderUI();
+window.addEventListener('DOMContentLoaded', () => {
+  students =
+    safeGetStorage(
+      'duty_students',
+      DEFAULT_STUDENTS
+    );
 
-    window.addEventListener('resize', () => {
-      autoScaleDeskText();
-    });
+  renderUI();
+
+  window.addEventListener('resize', () => {
+    autoScaleDeskText();
   });
+});
 </script>
+
 </body>
 </html>
